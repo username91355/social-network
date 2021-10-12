@@ -14,8 +14,8 @@ let mapStateToProps = (state: any) => {
 let mapDispatchToProps = (dispatch: any) => {
     return {
 
-        sendMessage(userId: string, value: string) {
-            dispatch(sendMessageAC(userId, value))
+        sendMessage() {
+            dispatch(sendMessageAC())
         },
 
         changeMessageTextArea(value: string) {

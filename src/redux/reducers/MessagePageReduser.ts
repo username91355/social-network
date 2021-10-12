@@ -6,11 +6,9 @@ const CHANGE_MESSAGE_TEXT_AREA = 'CHANGE_MESSAGE_TEXT_AREA'
 const SEND_MESSAGE = 'SEND_MESSAGE'
 
 //Action Creators
-const sendMessageAC = (userId: string, value: string) => {
+const sendMessageAC = () => {
     return {
         type: SEND_MESSAGE,
-        userId: userId,
-        value: value
     }
 }
 
@@ -24,11 +22,11 @@ const changeMessageTextAreaAC = (value: string) => {
 let initialState: MessagesStateType  = {
 
     messages: [
-        {id: v1(), userId: '5', incoming: true, text: 'Hello'},
-        {id: v1(), userId: '5', incoming: true, text: 'You want go to walk?'},
-        {id: v1(), userId: '0', incoming: false, text: 'HI. Yes i want'},
-        {id: v1(), userId: '5', incoming: true, text: 'Great. See you soon.'},
-        {id: v1(), userId: '0', incoming: false, text: 'Ok)'}
+        {id: v1(), userId: '5', name: 'Olga', incoming: true, text: 'Hello'},
+        {id: v1(), userId: '5', name: 'Olga', incoming: true, text: 'You want go to walk?'},
+        {id: v1(), userId: '0', name: 'Dmitriy', incoming: false, text: 'HI. Yes i want'},
+        {id: v1(), userId: '5', name: 'Olga', incoming: true, text: 'Great. See you soon.'},
+        {id: v1(), userId: '0', name: 'Dmitriy', incoming: false, text: 'Ok)'}
     ],
 
     newMessageTextArea: ''
@@ -40,12 +38,14 @@ let MessagesPageReducer = (state: MessagesStateType  = initialState, action: Act
         case SEND_MESSAGE: {
             return {
                 ...state,
-                messages: [state.messages, {
+                messages: [...state.messages, {
                     id: v1(),
-                    userId: action.userId,
+                    userId: '0',
+                    name: 'Dmitriy',
                     incoming: action.userId !== '0',
-                    text: action.value
-                }]
+                    text: state.newMessageTextArea
+                }], 
+                newMessageTextArea: ''
             }
         }
 
@@ -70,6 +70,7 @@ type MessagesStateType = {
 type MessageType = {
     id: string
     userId: string
+    name: string
     incoming: boolean
     text: string
 }

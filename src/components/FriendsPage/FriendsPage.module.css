@@ -1,0 +1,28 @@
+.friendsList__wrapper {
+    padding: 1em 24em 1em 1em;
+}
+
+.friendsList__item {
+    padding: 1em;
+    display: grid;
+    grid-template-columns: 6fr 2fr;
+}
+
+.friendsList__item_name {
+    font-weight: 700;
+}
+
+.friendsList__item_button {
+    padding: 0.2em 0.5em;
+    background-color: cornflowerblue;
+}
+
+.friendsList__buttonBox {
+    border-top: 2px cornflowerblue solid;
+}
+
+.friendsList__buttonBox_item {
+    margin: 0.5em 1em;
+    padding: 0.2em 0.5em;
+    background-color: cornflowerblue;
+}

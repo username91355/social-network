@@ -1,0 +1,21 @@
+.sideBar__wrapper {
+    grid-area: sideBar;
+}
+
+.sideBar__bar {
+    list-style: none;
+}
+
+.sideBar__item {
+    padding: 0.1em 0.5em;
+}
+
+.sideBar__item_link {
+    text-decoration: none;
+    font-weight: 600;
+    color: inherit;
+}
+
+.sideBar__item_link_active {
+    color: cornflowerblue;
+}
