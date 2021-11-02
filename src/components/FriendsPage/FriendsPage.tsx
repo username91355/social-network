@@ -1,18 +1,18 @@
 import axios from "axios"
-import React, { useState, MouseEvent } from "react";
-import { FilterType, setUsersAC } from "../../redux/reducers/FriendsPageReducer";
+import React from "react";
 import classes from './FriendsPage.module.css'
+import {Button, ButtonGroup} from "@mui/material";
 
 //FRIEND PAGE
 function FriendsPage(props: FriendsPagePropsType) {
 
-    if(props.friendsPage.allUsers.length === 0) {
+    if (props.friendsPage.allUsers.length === 0) {
         axios
-        .get('https://social-network.samuraijs.com/api/1.0/users')
-        .then(response => {
-            debugger
-            props.setUsers(response.data)
-        })
+            .get('https://social-network.samuraijs.com/api/1.0/users')
+            .then(response => {
+                debugger
+                props.setUsers(response.data)
+            })
     }
 
     let addFriend = (id: string) => {
@@ -35,12 +35,15 @@ function FriendsPage(props: FriendsPagePropsType) {
     return (
         <div>
             <div className={classes.friendsList__wrapper}>
+                <ButtonGroup className={classes.friendsList__buttonBox}
+                             variant="contained"
+                             aria-label="outlined primary button group">
+                    <Button>Show all</Button>
+                    <Button>Show my friends</Button>
+                    <Button>Show users</Button>
+                </ButtonGroup>
+
                 {friendsElements}
-                <div className={classes.friendsList__buttonBox}>
-                    <button className={classes.friendsList__buttonBox_item}>Show all</button>
-                    <button className={classes.friendsList__buttonBox_item}>Show my friends</button>
-                    <button className={classes.friendsList__buttonBox_item}>Show users</button>
-                </div>
             </div>
         </div>
     )
@@ -58,35 +61,33 @@ function Friend(props: FriendPropsType) {
     }
 
     return (<div>
-        {(!props.onFriends)
-            ? <div className={classes.friendsList__item}>
-                <div className={classes.friendsList__item_name}>
-                    {props.name}
+            {(!props.onFriends)
+                ? <div className={classes.friendsList__item}>
+                    <div className={classes.friendsList__item_name}>
+                        {props.name}
+                    </div>
+                    <Button variant="contained" className={classes.friendsList__item_button}
+                            onClick={add}>ADD</Button>
                 </div>
-                <button
-                    className={classes.friendsList__item_button}
-                    onClick={add}>Add</button>
-            </div>
-            : <div className={classes.friendsList__item}>
-                <div className={classes.friendsList__item_name}>
-                    {props.name}
-                </div>
-                <button
-                    className={classes.friendsList__item_button}
-                    onClick={remove}>Remove</button>
-            </div>}
-    </div>
+                : <div className={classes.friendsList__item}>
+                    <div className={classes.friendsList__item_name}>
+                        {props.name}
+                    </div>
+                    <Button variant="contained" className={classes.friendsList__item_button}
+                            onClick={remove}>Remove</Button>
+                </div>}
+        </div>
     )
 }
 
-type FriendsPagePropsType   = {
-    friendsPage: FriednsPageStateType
-    addFriend: (id:string) => void
-    removeFriend: (id:string) => void
+type FriendsPagePropsType = {
+    friendsPage: FriendsPageStateType
+    addFriend: (id: string) => void
+    removeFriend: (id: string) => void
     setUsers: (users: any | never) => void
 }
 
-type FriednsPageStateType = {
+type FriendsPageStateType = {
     allUsers: Array<UserType>
 }
 
@@ -95,7 +96,6 @@ type UserType = {
     name: string
     onFriends: boolean
 }
-
 
 type FriendPropsType = {
     id: string

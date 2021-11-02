@@ -17,12 +17,9 @@
     background-color: cornflowerblue;
 }
 
-.friendsList__buttonBox {
-    border-top: 2px cornflowerblue solid;
-}
+.friendsList__buttonBox {}
 
 .friendsList__buttonBox_item {
     margin: 0.5em 1em;
     padding: 0.2em 0.5em;
-    background-color: cornflowerblue;
 }
