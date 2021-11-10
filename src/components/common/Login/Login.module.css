@@ -1,0 +1,21 @@
+.registeredUser__wrapper {
+    background-color: #1976d2;
+    width: 220px;
+    height: 40px;
+    padding: 10px;
+}
+
+.registeredUser__container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.notRegisteredUser__container {
+    background-color: #1976d2;
+    text-align: center;
+}
+
+.notRegisteredUser__container_button {
+    margin: 3px;
+}

@@ -1,0 +1,31 @@
+.friends__wrapper {
+    background-color: white;
+}
+
+.friends__user {
+    display: flex;
+    padding: 10px;
+}
+
+.friendItem__wrapper {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1976d2;
+    width: 100%;
+    padding: 10px;
+    margin: 5px;
+    display: flex;
+    border: 1px solid cornflowerblue;
+    border-radius: 10px;
+}
+.friendItem__avatar {
+    padding: 5px;
+}
+
+.friendItem__info {
+    padding: 5px;
+}
+
+.friendItem__interface {
+    margin-left: auto;
+}
