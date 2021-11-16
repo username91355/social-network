@@ -1,9 +1,0 @@
-.nav__wrapper {
-    grid-area: n;
-    min-width: 160px;
-}
-
-.nav__wrapper > Button {
-    color: #1976d2;
-}
-

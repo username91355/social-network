@@ -1,21 +1,12 @@
-import { combineReducers, createStore } from "redux";
-import { profileReducer } from './reducers/profileReducer'
-import {usersReducer} from "./reducers/usersReducer";
-import {messagesReducer} from "./reducers/messagesReducer";
+import {applyMiddleware, combineReducers, createStore} from "redux";
+import {usersReducer} from "./users-reducer";
+import thunkMiddleware from 'redux-thunk'
 
-let reducers = combineReducers({
-    profile: profileReducer,
-    messages: messagesReducer,
+const rootReducers = combineReducers({
     users: usersReducer
 })
 
-let store = createStore(reducers)
+export const store = createStore(rootReducers, applyMiddleware(thunkMiddleware))
 
-//Расширение интерфейса Window, сообщаем о новом свойстве
-declare global {
-    interface Window { store: any; }
-}
-
+// @ts-ignore
 window.store = store
-
-export {store}

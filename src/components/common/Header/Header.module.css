@@ -1,8 +1,5 @@
-.header__wrapper {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.header__login {
-    margin-left: auto;
+.header_wrapper {
+    height: 60px;
+    background-color: burlywood;
+    grid-area: h;
 }

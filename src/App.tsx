@@ -1,25 +1,19 @@
-import React from 'react';
-import './App.css';
-import {HeaderContainer} from "./components/common/Header/HeaderContainer";
-import {Navigation} from "./components/common/Navigation/Navigation";
-import {Route} from "react-router-dom";
-import {ProfileContainer} from "./components/Profile/ProfileContainer";
-import {FriendsContainer} from "./components/Friends/FriendsContainer";
-import {MessagesContainer} from "./components/Messages/MessagesContainer";
-
+import React from 'react'
+import './App.css'
+import Sidebar from './components/common/sidebar/Sidebar'
+import Header from './components/common/header/Header'
+import Users from './components/users/UsersContainer'
+import { Route, Routes } from 'react-router-dom'
 
 function App() {
-
     return (
-        <div className="app__wrapper">
-            <HeaderContainer />
-            <div className="app__container">
-                <Navigation/>
-                <div className="app__content">
-                    <Route path={'/profile'} render={() => <ProfileContainer />}/>
-                    <Route path={'/messages'} render={() => <MessagesContainer />}/>
-                    <Route path={'/friends'} render={() => <FriendsContainer />}/>
-                </div>
+        <div className='app_wrapper'>
+            <Header/>
+            <Sidebar/>
+            <div className='app_content'>
+                <Routes>
+                    <Route path='/users' element={<Users/>}/>
+                </Routes>
             </div>
         </div>
     );
