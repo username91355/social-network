@@ -1,0 +1,6 @@
+.sidebar_wrapper {
+    display: flex;
+    flex-direction: column;
+    grid-area: s;
+    background-color: darksalmon;
+}
