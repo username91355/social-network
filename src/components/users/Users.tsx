@@ -2,46 +2,52 @@ import React, {ChangeEvent, useEffect} from 'react';
 import {initializationStatus, UserType} from "../../redux/users-reducer";
 import avatar from './../../assets/img/avatar.png'
 import styles from './Users.module.css'
+import { UsersPropsType } from './UsersContainer';
 
-type UsersPropsType = {
-    count: number
-    page: number
-    term: string
-    friend: boolean
-    users: Array<UserType>
-    usersInit: string
-    getUsers: (count: number,
-               page: number,
-               term: string,
-               friend: boolean) => void
-    followOnUser: (id: number) => void
-    unfollowFromUser: (id: number) => void
-    changeSearchArea: (text: string) => void
-    showAllUsers: () => void
-    showSubscribers: () => void
-    showNonSubscribers: () => void
-}
+// type UsersPropsType = {
+//     count: number
+//     page: number
+//     term: string
+//     friend: boolean
+//     users: Array<UserType>
+//     usersInit: string
+//     getUsers: (count: number,
+//                page: number,
+//                term: string,
+//                friend: boolean) => void
+//     followOnUser: (id: number) => void
+//     unfollowFromUser: (id: number) => void
+//     changeSearchArea: (text: string) => void
+//     showAllUsers: () => void
+//     showSubscribers: () => void
+//     showNonSubscribers: () => void
+// }
 
-const Users: React.FC<UsersPropsType> = ({
-                                             count,
-                                             page,
-                                             term,
-                                             friend,
-                                             users,
-                                             usersInit,
-                                             getUsers,
-                                             followOnUser,
-                                             unfollowFromUser,
-                                             changeSearchArea,
-                                             showAllUsers,
-                                             showSubscribers,
-                                             showNonSubscribers
-                                         }) => {
+const Users: React.FC<UsersPropsType> = (props) => {
+
+    const {
+        count,
+        page,
+        term,
+        friend,
+        users,
+        usersInit,
+        getUsers,
+        followOnUser,
+        unfollowFromUser,
+        changeSearchArea,
+        showAllUsers,
+        showSubscribers,
+        showNonSubscribers
+    } = props
+
+
     const takeUsers = () => {
+        //@ts-ignore
         getUsers(count, page, term, friend)
     }
 
-    useEffect(takeUsers, [count, page, term, friend, getUsers])
+    useEffect(takeUsers, [count, page, friend, getUsers])
 
     const searchAreaChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeSearchArea(e.currentTarget.value)
@@ -66,7 +72,7 @@ const Users: React.FC<UsersPropsType> = ({
                         onClick={showNonSubscribers}>Non subscribers</button>
             </div>
             {
-                users.map(u => {
+                users.map((u: UserType) => {
                     return <User key={u.id}
                                  user={u}
                                  followOnUser={followOnUser}

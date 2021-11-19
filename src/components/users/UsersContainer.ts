@@ -1,4 +1,4 @@
-import {connect} from "react-redux";
+import {connect, ConnectedProps} from "react-redux";
 import Users from "./Users";
 import {
     changeSearchArea, changeShowingUsers,
@@ -6,15 +6,24 @@ import {
     setFollowedStatusThunkCreator,
     setUnfollowedStatusThunkCreator
 } from "../../redux/users-reducer";
+import {
+    selectorCount,
+    selectorFriend,
+    selectorPage,
+    selectorTerm,
+    selectorUsers,
+    selectorUsersInit
+} from "./UsersSelectors";
+import {AppStateType} from "../../redux/store";
 
-const MapStateToProps = (store: any) => {
+const MapStateToProps = (store: AppStateType) => {
     return {
-        count: store.users.count,
-        page: store.users.page,
-        term: store.users.term,
-        friend: store.users.friend,
-        usersInit: store.users.userInitialization,
-        users: store.users.users
+        count: selectorCount(store),
+        page: selectorPage(store),
+        term: selectorTerm(store),
+        friend: selectorFriend(store),
+        usersInit: selectorUsersInit(store),
+        users: selectorUsers(store),
     }
 }
 
@@ -50,5 +59,8 @@ const MapDispatchToProps = (dispatch: any) => {
 
     }
 }
+const connector = connect(MapStateToProps,MapDispatchToProps)
 
-export default connect(MapStateToProps, MapDispatchToProps)(Users)
+export type UsersPropsType = ConnectedProps<typeof connector>
+
+export default connector(Users)
