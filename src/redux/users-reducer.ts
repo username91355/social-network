@@ -1,17 +1,14 @@
 import {usersAPI} from "../data/serverAPI"
 
 //Action types(constants)
-export enum ACTIONS_TYPES {
-    SET_USERS = 'SocialNetwork/usersReducer/SET_USER',
-    SET_INIT_STATUS = 'SocialNetwork/usersReducer/SET_INIT_STATUS',
-    SUBSCRIBE_TO_USER = 'SocialNetwork/usersReducer/SUBSCRIBE_TO_USER',
-    UNSUBSCRIBE_TO_USER = 'SocialNetwork/usersReducer/UNSUBSCRIBE_TO_USER ',
-    SET_WAIT_TO_SUBSCRIBING = 'SocialNetwork/usersReducer/SET_WAIT_TO_SUBSCRIBING',
-    REMOVE_WAIT_TO_SUBSCRIBING = 'SocialNetwork/usersReducer/REMOVE_WAIT_TO_SUBSCRIBING',
-    CHANGE_SEARCH_AREA = 'SocialNetwork/usersReducer/CHANGE_SEARCH_AREA',
-    CHANGE_SHOWING_USERS = 'SocialNetwork/usersReducer/CHANGE_SHOWING_USERS',
-}
-
+const SET_USERS = 'SocialNetwork/usersReducer/SET_USER'
+const SET_INIT_STATUS = 'SocialNetwork/usersReducer/SET_INIT_STATUS'
+const SUBSCRIBE_TO_USER = 'SocialNetwork/usersReducer/SUBSCRIBE_TO_USER'
+const UNSUBSCRIBE_TO_USER = 'SocialNetwork/usersReducer/UNSUBSCRIBE_TO_USER '
+const SET_WAIT_TO_SUBSCRIBING = 'SocialNetwork/usersReducer/SET_WAIT_TO_SUBSCRIBING'
+const REMOVE_WAIT_TO_SUBSCRIBING = 'SocialNetwork/usersReducer/REMOVE_WAIT_TO_SUBSCRIBING'
+const CHANGE_SEARCH_AREA = 'SocialNetwork/usersReducer/CHANGE_SEARCH_AREA'
+const CHANGE_SHOWING_USERS = 'SocialNetwork/usersReducer/CHANGE_SHOWING_USERS'
 
 //Initial state
 export const initializationStatus: InitializationStatusType = {
@@ -19,7 +16,6 @@ export const initializationStatus: InitializationStatusType = {
     IN_PROGRESS: 'IN_PROGRESS',
     SUCCESS: 'SUCCESS'
 }
-
 const initialState: UsersStateType = {
     count: 10,
     page: 1,
@@ -58,7 +54,7 @@ type InitializationStatusType = {
     SUCCESS: string
 }
 
-type ActionType =
+export type ActionType =
     SetUsersType
     | SetInitStatusType
     | SubscribeToUserType
@@ -80,56 +76,56 @@ type ChangeShowingUsersType = ReturnType<typeof changeShowingUsers>
 export const usersReducer = (state: UsersStateType = initialState, action: ActionType) => {
     switch (action.type) {
 
-        case ACTIONS_TYPES.SET_USERS: {
+        case SET_USERS: {
             return {
                 ...state,
                 users: action.users
             }
         }
 
-        case ACTIONS_TYPES.SET_INIT_STATUS: {
+        case SET_INIT_STATUS: {
             return {
                 ...state,
                 userInitialization: action.status
             }
         }
 
-        case ACTIONS_TYPES.SUBSCRIBE_TO_USER: {
+        case SUBSCRIBE_TO_USER: {
             return {
                 ...state,
                 users: state.users.map((u: any) => (u.id === action.id) ? {...u, followed: true} : u)
             }
         }
 
-        case ACTIONS_TYPES.UNSUBSCRIBE_TO_USER: {
+        case UNSUBSCRIBE_TO_USER: {
             return {
                 ...state,
                 users: state.users.map((u: any) => (u.id === action.id) ? {...u, followed: false} : u)
             }
         }
 
-        case ACTIONS_TYPES.SET_WAIT_TO_SUBSCRIBING: {
+        case SET_WAIT_TO_SUBSCRIBING: {
             return {
                 ...state,
                 followingInProgress: [...state.followingInProgress, action.id]
             }
         }
 
-        case ACTIONS_TYPES.REMOVE_WAIT_TO_SUBSCRIBING: {
+        case REMOVE_WAIT_TO_SUBSCRIBING: {
             return {
                 ...state,
                 followingInProgress: state.followingInProgress.filter((i: any) => i !== action.id)
             }
         }
 
-        case ACTIONS_TYPES.CHANGE_SEARCH_AREA: {
+        case CHANGE_SEARCH_AREA: {
             return {
                 ...state,
                 term: action.text
             }
         }
 
-        case ACTIONS_TYPES.CHANGE_SHOWING_USERS: {
+        case CHANGE_SHOWING_USERS: {
             return {
                 ...state,
                 friend: action.friend
@@ -142,14 +138,14 @@ export const usersReducer = (state: UsersStateType = initialState, action: Actio
 }
 
 //Action creators
-export const setUsers = (users: any) => ({type: ACTIONS_TYPES.SET_USERS, users} as const)
-export const setInitStatus = (status: any) => ({type: ACTIONS_TYPES.SET_INIT_STATUS, status} as const)
-export const subscribeToUser = (id: number) => ({type: ACTIONS_TYPES.SUBSCRIBE_TO_USER, id} as const)
-export const unsubscribeFromUser = (id: number) => ({type: ACTIONS_TYPES.UNSUBSCRIBE_TO_USER, id} as const)
-export const setWaitToSubscribing = (id: number) => ({type: ACTIONS_TYPES.SET_WAIT_TO_SUBSCRIBING, id} as const)
-export const removeWaitToSubscribing = (id: number) => ({type: ACTIONS_TYPES.REMOVE_WAIT_TO_SUBSCRIBING, id} as const)
-export const changeSearchArea = (text: string) => ({type: ACTIONS_TYPES.CHANGE_SEARCH_AREA, text} as const)
-export const changeShowingUsers = (friend: boolean | null) => ({type: ACTIONS_TYPES.CHANGE_SHOWING_USERS, friend} as const)
+export const setUsers = (users: any) => ({type: SET_USERS, users} as const)
+export const setInitStatus = (status: any) => ({type: SET_INIT_STATUS, status} as const)
+export const subscribeToUser = (id: number) => ({type: SUBSCRIBE_TO_USER, id} as const)
+export const unsubscribeFromUser = (id: number) => ({type: UNSUBSCRIBE_TO_USER, id} as const)
+export const setWaitToSubscribing = (id: number) => ({type: SET_WAIT_TO_SUBSCRIBING, id} as const)
+export const removeWaitToSubscribing = (id: number) => ({type: REMOVE_WAIT_TO_SUBSCRIBING, id} as const)
+export const changeSearchArea = (text: string) => ({type: CHANGE_SEARCH_AREA, text} as const)
+export const changeShowingUsers = (friend: boolean | null) => ({type: CHANGE_SHOWING_USERS, friend} as const)
 
 //Thunks
 export const getUsersThunkCreator = (count: number, page: number, term: string, friend: boolean) =>

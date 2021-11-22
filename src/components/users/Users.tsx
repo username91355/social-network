@@ -2,28 +2,9 @@ import React, {ChangeEvent, useEffect} from 'react';
 import {initializationStatus, UserType} from "../../redux/users-reducer";
 import avatar from './../../assets/img/avatar.png'
 import styles from './Users.module.css'
-import { UsersPropsType } from './UsersContainer';
+import { UsersPropsType } from './UsersC';
 
-// type UsersPropsType = {
-//     count: number
-//     page: number
-//     term: string
-//     friend: boolean
-//     users: Array<UserType>
-//     usersInit: string
-//     getUsers: (count: number,
-//                page: number,
-//                term: string,
-//                friend: boolean) => void
-//     followOnUser: (id: number) => void
-//     unfollowFromUser: (id: number) => void
-//     changeSearchArea: (text: string) => void
-//     showAllUsers: () => void
-//     showSubscribers: () => void
-//     showNonSubscribers: () => void
-// }
-
-const Users: React.FC<UsersPropsType> = (props) => {
+const Users: React.FC<UsersPropsType> = props => {
 
     const {
         count,
@@ -38,9 +19,8 @@ const Users: React.FC<UsersPropsType> = (props) => {
         changeSearchArea,
         showAllUsers,
         showSubscribers,
-        showNonSubscribers
+        showNonSubscribers,
     } = props
-
 
     const takeUsers = () => {
         //@ts-ignore

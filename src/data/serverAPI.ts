@@ -25,3 +25,12 @@ export const usersAPI = {
             .delete(`/follow/${id}`)
     }
 }
+
+export const authAPI = {
+
+    isAuth() {
+        return axiosInstance
+            .get(`/auth/me`)
+    }
+
+}

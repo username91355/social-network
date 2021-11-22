@@ -1,10 +1,29 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styles from './Header.module.css'
 
-const Header = () => {
+type HeaderPropsType = {
+    isAuth: boolean
+    login: string
+    isAuthorizedTC: () => void
+}
+
+const Header: React.FC<HeaderPropsType> = props => {
+
+    const {
+        isAuth,
+        login,
+        isAuthorizedTC
+    } = props
+
+    useEffect(isAuthorizedTC, [isAuth])
+
     return (
         <div className={styles.header_wrapper}>
-            Header
+            {
+                isAuth
+                    ? login
+                    : 'Not authorized'
+            }
         </div>
     );
 };

@@ -55,11 +55,11 @@ const MapDispatchToProps = (dispatch: any) => {
 
         showNonSubscribers: () => {
             dispatch(changeShowingUsers(false))
-        }
-
+        },
     }
 }
-const connector = connect(MapStateToProps,MapDispatchToProps)
+
+const connector = connect(MapStateToProps, MapDispatchToProps)
 
 export type UsersPropsType = ConnectedProps<typeof connector>
 
