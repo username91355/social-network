@@ -1,4 +1,5 @@
 import React, {ChangeEvent, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import {initializationStatus, UserType} from "../../redux/users-reducer";
 import avatar from './../../assets/img/avatar.png'
 import styles from './Users.module.css'
@@ -85,7 +86,7 @@ const User: React.FC<UserPropsType> = ({user, followOnUser, unfollowFromUser}) =
                 <img src={(user.photos.small) ? user.photos.small : avatar} alt="avatar"/>
             </div>
             <div className={styles.user_info_box}>
-                <span>{user.name}</span>
+                <Link to={`/profile/${user.id}`}>{user.name}</Link>
                 <span>{(user.status) ? user.status : 'Empty status'}</span>
             </div>
             <div className={styles.user_button_box}>

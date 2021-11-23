@@ -1,4 +1,4 @@
-import authReducer, {isAuthorized} from "./authReducer";
+import authReducer, {isAuthorized} from "./auth-reducer";
 
 const testState = {
     isAuth: false,
