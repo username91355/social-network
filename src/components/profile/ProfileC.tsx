@@ -1,67 +1,58 @@
 import {connect} from "react-redux";
-import Profile from "./Profile";
 import {AppStateType} from "../../redux/store";
-import {getProfileTC} from "../../redux/profile-reducer";
 import React, {useEffect} from 'react';
-import {compose} from "redux";
+import {getProfileTC, TProfile} from "../../redux/profile-reducer";
 import {useParams} from "react-router-dom";
+import Profile from "./Profile";
 
-const ProfileAuthCont: React.FC<any> = ({profile, status, getProfileTC, isAuth, authUserID}) => {
-    return <>
-        {
-            (!isAuth)
-                ? <div>Loding...</div>
-                : <ProfileContainer profile={profile}
-                                    status={status}
-                                    isAuth={isAuth}
-                                    getProfileTC={getProfileTC}
-                                    authUserID={authUserID}
-                />
-        }
-    </>
+
+type TProps = TMSTProps & TMDTProps
+
+type TMSTProps = {
+    profile: TProfile
+    status: string
+    authUserID: number
 }
 
+type TMDTProps = {
+    getProfileTC: (userId: number) => void
+}
 
-const ProfileContainer: React.FC<any> = ({profile, status, getProfileTC, isAuth, authUserID}) => {
+//const ProfileMemo = React.memo(Profile)
+
+const ProfileContainer = React.memo((props: TProps) => {
+
+    const {
+        profile,
+        authUserID,
+        getProfileTC
+    } = props
 
     const params = useParams()
 
     useEffect(() => {
         const userID = params.userID
-        console.log('useEffect from PC')
-
-        if (!profile) {
-            getProfileTC(authUserID)
-        }
 
         if (!userID) {
             getProfileTC(authUserID)
         } else {
-            getProfileTC(userID)
+            getProfileTC(+userID)
         }
-
-    }, [params, authUserID])
-
-    if (!isAuth) {
-        return <div>Loading...</div>
-    }
+    }, [getProfileTC, authUserID, params.userID])
 
     return <>
-        <Profile profile={profile} status={status} isAuth={isAuth} authUserID={authUserID}/>
+        <Profile profile={profile} status={'status'}/>
     </>
-}
+})
 
-const mapStateToProps = (state: AppStateType) => {
+const mapStateToProps = (state: AppStateType): TMSTProps => {
     return {
         profile: state.profile.profile,
         status: state.profile.status,
-        isAuth: state.auth.isAuth,
         authUserID: state.auth.id
     }
 }
 
-export default compose(
-    connect(mapStateToProps, {
-        getProfileTC
-    })
-)(ProfileAuthCont)
+export default connect(mapStateToProps, {
+    getProfileTC
+})(ProfileContainer)

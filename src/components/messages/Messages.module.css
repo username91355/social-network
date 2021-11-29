@@ -1,0 +1,12 @@
+.messages__wrapper {
+    display: flex;
+    padding: 10px;
+}
+
+.messages__dialogs {
+    padding: 10px;
+}
+
+.messages__messages {
+    padding: 10px;
+}

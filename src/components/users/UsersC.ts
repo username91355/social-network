@@ -15,6 +15,7 @@ import {
     selectorUsersInit
 } from "./UsersSelectors";
 import {AppStateType} from "../../redux/store";
+import React from "react";
 
 const MapStateToProps = (store: AppStateType) => {
     return {
@@ -29,7 +30,7 @@ const MapStateToProps = (store: AppStateType) => {
 
 const MapDispatchToProps = (dispatch: any) => {
     return {
-        getUsers: (count: number, page: number, term: string, friend: boolean) => {
+        getUsers: (count: number, page: number, term: string, friend: boolean | null) => {
             dispatch(getUsersThunkCreator(count, page, term, friend))
         },
 

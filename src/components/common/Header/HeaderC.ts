@@ -3,12 +3,12 @@ import Header from "./Header";
 import {isAuthorizedTC} from "../../../redux/auth-reducer";
 import {AppStateType} from "../../../redux/store";
 
-type MSTPHeaderType = {
+type TMSTPHeader = {
     isAuth: boolean
     login: string
 }
 
-const mapStateToProps = (state: AppStateType): MSTPHeaderType => {
+const mapStateToProps = (state: AppStateType): TMSTPHeader => {
     return {
         isAuth: state.auth.isAuth,
         login: state.auth.login

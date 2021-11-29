@@ -1,12 +1,13 @@
-import React, {ChangeEvent, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import React, {ChangeEvent} from 'react';
+import {Link} from 'react-router-dom';
 import {initializationStatus, UserType} from "../../redux/users-reducer";
 import avatar from './../../assets/img/avatar.png'
 import styles from './Users.module.css'
-import { UsersPropsType } from './UsersC';
+import {UsersPropsType} from './UsersC';
+import Preloader from "../common/preloader/Preloader";
 
 const Users: React.FC<UsersPropsType> = props => {
-
+    console.log('Users')
     const {
         count,
         page,
@@ -24,11 +25,10 @@ const Users: React.FC<UsersPropsType> = props => {
     } = props
 
     const takeUsers = () => {
-        //@ts-ignore
         getUsers(count, page, term, friend)
     }
 
-    useEffect(takeUsers, [count, page, friend, getUsers])
+    //useEffect(takeUsers, [count, page, friend, getUsers, term])
 
     const searchAreaChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeSearchArea(e.currentTarget.value)
@@ -38,31 +38,39 @@ const Users: React.FC<UsersPropsType> = props => {
         takeUsers()
     }
 
-    return (
-        <div>
+    return <>
+        {/*{(usersInit === initializationStatus.NOT_INITIALIZED)*/}
+        {/*    ? <Preloader/>*/}
+        {/*    : */}
             <div>
-                <input type="text" value={term} onChange={searchAreaChangeHandler}/>
-                <button onClick={takeUsers}>Search</button>
+                <div>
+                    <input type="text" value={term} onChange={searchAreaChangeHandler}/>
+                    <button onClick={takeUsers}>Search</button>
+                </div>
+                <div className={styles.users_filter_buttons}>
+                    <button className={!friend && friend === null ? styles.active_filter_button : ''}
+                            onClick={showAllUsers}>All users
+                    </button>
+                    <button className={friend ? styles.active_filter_button : ''}
+                            onClick={showSubscribers}> Subscribers
+                    </button>
+                    <button className={!friend && friend !== null ? styles.active_filter_button : ''}
+                            onClick={showNonSubscribers}>Non subscribers
+                    </button>
+                </div>
+                {
+                    users.map((u: UserType) => {
+                        return <User key={u.id}
+                                     user={u}
+                                     followOnUser={followOnUser}
+                                     unfollowFromUser={unfollowFromUser}
+                        />
+                    })
+                }
             </div>
-            <div className={styles.users_filter_buttons}>
-                <button className={!friend && friend === null ? styles.active_filter_button : ''}
-                        onClick={showAllUsers}>All users</button>
-                <button className={friend ? styles.active_filter_button : ''}
-                        onClick={showSubscribers}> Subscribers</button>
-                <button className={!friend && friend !== null? styles.active_filter_button : ''}
-                        onClick={showNonSubscribers}>Non subscribers</button>
-            </div>
-            {
-                users.map((u: UserType) => {
-                    return <User key={u.id}
-                                 user={u}
-                                 followOnUser={followOnUser}
-                                 unfollowFromUser={unfollowFromUser}
-                    />
-                })
-            }
-        </div>
-    );
+        {/*}*/}
+    </>
+        ;
 };
 
 type UserPropsType = {

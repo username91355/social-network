@@ -148,7 +148,7 @@ export const changeSearchArea = (text: string) => ({type: CHANGE_SEARCH_AREA, te
 export const changeShowingUsers = (friend: boolean | null) => ({type: CHANGE_SHOWING_USERS, friend} as const)
 
 //Thunks
-export const getUsersThunkCreator = (count: number, page: number, term: string, friend: boolean) =>
+export const getUsersThunkCreator = (count: number, page: number, term: string, friend: boolean | null) =>
     async (dispatch: any) => {
         dispatch(setInitStatus(initializationStatus.IN_PROGRESS))
         const users = await usersAPI.getUsers(count, page, term, friend)

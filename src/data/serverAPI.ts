@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 export const usersAPI = {
 
-    getUsers(count: number, page: number, term:string, friend:boolean) {
+    getUsers(count: number, page: number, term:string, friend: boolean | null) {
         return axiosInstance
             .get(`/users?count=${count}&page=${page}&term=${term}&friend=${friend}`)
     },
@@ -31,6 +31,11 @@ export const authAPI = {
     isAuth() {
         return axiosInstance
             .get(`/auth/me`)
+    },
+
+    login(email: string, password: string, rememberMe: boolean, captcha: boolean) {
+        return axiosInstance
+            .post(`/auth/login`, {email,password,rememberMe,captcha})
     }
 
 }
@@ -40,5 +45,10 @@ export const profileAPI = {
     getProfile(userID: number) {
         return axiosInstance
             .get(`/profile/${userID}`)
-    }
+    },
+
+    getStatus(userID: number) {
+        return axiosInstance
+            .get(`/profile/status/${userID}`)
+    },
 }

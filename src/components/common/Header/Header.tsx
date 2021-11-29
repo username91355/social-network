@@ -15,7 +15,7 @@ const Header: React.FC<HeaderPropsType> = props => {
         isAuthorizedTC
     } = props
 
-    useEffect(isAuthorizedTC, [isAuth])
+    useEffect(isAuthorizedTC, [isAuth, isAuthorizedTC])
 
     return (
         <div className={styles.header_wrapper}>
