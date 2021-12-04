@@ -1,10 +1,11 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {initializationStatus, UserType} from "../../redux/users-reducer";
 import avatar from './../../assets/img/avatar.png'
 import styles from './Users.module.css'
 import {UsersPropsType} from './UsersC';
 import Preloader from "../common/preloader/Preloader";
+import Search from "../common/Search/Search";
 
 const Users: React.FC<UsersPropsType> = props => {
     console.log('Users')
@@ -28,7 +29,7 @@ const Users: React.FC<UsersPropsType> = props => {
         getUsers(count, page, term, friend)
     }
 
-    //useEffect(takeUsers, [count, page, friend, getUsers, term])
+    useEffect(takeUsers, [count, page, friend, getUsers])
 
     const searchAreaChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         changeSearchArea(e.currentTarget.value)
@@ -39,12 +40,11 @@ const Users: React.FC<UsersPropsType> = props => {
     }
 
     return <>
-        {/*{(usersInit === initializationStatus.NOT_INITIALIZED)*/}
-        {/*    ? <Preloader/>*/}
-        {/*    : */}
-            <div>
+        {(usersInit === initializationStatus.NOT_INITIALIZED)
+            ? <Preloader/>
+            : <div>
                 <div>
-                    <input type="text" value={term} onChange={searchAreaChangeHandler}/>
+                    <Search value={term} onChange={searchAreaChangeHandler}/>
                     <button onClick={takeUsers}>Search</button>
                 </div>
                 <div className={styles.users_filter_buttons}>
@@ -68,7 +68,7 @@ const Users: React.FC<UsersPropsType> = props => {
                     })
                 }
             </div>
-        {/*}*/}
+        }
     </>
         ;
 };

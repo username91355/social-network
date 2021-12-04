@@ -4,11 +4,12 @@ import {profileAPI} from "../data/serverAPI";
 //Action types
 const SET_PROFILE = 'SET_PROFILE'
 const GET_STATUS = 'GET_STATUS'
+const SET_STATUS = 'SET_STATUS'
 
 //State
 const initialState = {
     profile: null,
-    status: '',
+    status: null,
 
     posts: [
         {id: 1, text: "Hello React! It,s my first post!", likes: 20, comment: 5},
@@ -49,23 +50,11 @@ const profileReducer = (state: initialStateType = initialState, action: any) => 
                 status: action.status
             }
 
-        // case ADD_MESSAGE: {
-        //     const allMessageID = [...state.messages.map(p => p.id)]
-        //     let newID = 1
-        //
-        //     const generateID = (id: number) => {
-        //         return (allMessageID.some(i => +i === +id))
-        //             ? generateID(id + 1)
-        //             : id
-        //     }
-        //     return {
-        //         ...state,
-        //         messagesData: [...state.messages, {
-        //             id: generateID(newID),
-        //             message: action.textMessage,
-        //         }]
-        //     }
-        // }
+        case SET_STATUS:
+            return {
+                ...state,
+                status: action.status
+            }
 
         default:
             return state
@@ -75,35 +64,30 @@ const profileReducer = (state: initialStateType = initialState, action: any) => 
 //Action creator
 const setProfile = (profile: AxiosResponse<TProfile>) => ({type: SET_PROFILE, profile} as const)
 const getStatus = (status: AxiosResponse<string>) => ({type: GET_STATUS, status} as const)
+const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
 
 //Thunk
 export const getProfileTC = (userID: number) => async (dispatch: any) => {
-    console.log('request Profile')
-
     const response = await profileAPI.getProfile(userID)
     dispatch(setProfile(response.data))
 }
 
 export const getStatusTC = (userID: number) => async (dispatch: any) => {
-    console.log('request Status')
-
     const response = await profileAPI.getStatus(userID)
     dispatch(getStatus(response.data))
+}
+
+export const setStatusTC = (status: string) => async (dispatch: any) => {
+    const response = await  profileAPI.setStatus(status)
+    if(response.data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
 }
 
 //TYPSCRIPT
 export type TProfile = {
     aboutMe: string | null
-    contacts: {
-        facebook: string | null
-        website: string | null
-        vk: string | null
-        twitter: string | null
-        instagram: string | null
-        youtube: string | null
-        github: string | null
-        mainLink: string | null
-    }
+    contacts: TContacts
     lookingForAJob: boolean
     lookingForAJobDescription: string | null
     fullName: string
@@ -116,10 +100,14 @@ export type TProfile = {
 
 type initialStateType = {
     profile: TProfile | null
-    status: string
+    status: string | null
     posts: Array<TPost>
     dialogs: Array<TDialog>
     messages: Array<TMessage>
+}
+
+export type TContacts = {
+    [key: string] : string | null
 }
 
 type TPost = {

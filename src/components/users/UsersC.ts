@@ -15,7 +15,6 @@ import {
     selectorUsersInit
 } from "./UsersSelectors";
 import {AppStateType} from "../../redux/store";
-import React from "react";
 
 const MapStateToProps = (store: AppStateType) => {
     return {

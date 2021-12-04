@@ -8,7 +8,6 @@ import Profile from "./components/profile/ProfileC";
 import {connect} from 'react-redux'
 import {isAuthorizedTC} from "./redux/auth-reducer";
 import {AppStateType} from "./redux/store";
-import Preloader from "./components/common/preloader/Preloader";
 import Messages from "./components/messages/MessagesC";
 import Login from "./components/common/login/login";
 

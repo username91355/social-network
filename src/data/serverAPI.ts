@@ -51,4 +51,9 @@ export const profileAPI = {
         return axiosInstance
             .get(`/profile/status/${userID}`)
     },
+
+    setStatus(status: string) {
+        return axiosInstance
+            .put(`/profile/status`, {status})
+    }
 }
