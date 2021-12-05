@@ -1,179 +1,80 @@
-import {
-    changeSearchArea, changeShowingUsers,
-    setInitStatus,
-    setUsers, setWaitToSubscribing,
-    subscribeToUser,
-    unsubscribeFromUser,
-    usersReducer,
-    UsersStateType
-} from "./users-reducer";
+import profileReducer, {
+    CHANGE_NEW_MESSAGE_AREA, SEND_MESSAGE,
+    SET_PROFILE,
+    SET_STATUS,
+    TProfile
+} from "./profile-reducer";
 
-const testState: UsersStateType = {
-    count: 10,
-    page: 1,
-    term: '',
-    friend: null,
-    userInitialization: 'SUCCESS',
-    users: [
-        {
-            id: 11,
-            name: 'First start user',
-            status: 'Wait',
-            followed: true,
-            photos: {
-                small: 'url_small_img',
-                large: 'url_large_img'
-            }
-        },
-        {
-            id: 12,
-            name: 'Second start user',
-            status: 'Dance',
-            followed: false,
-            photos: {
-                small: 'url_small_img',
-                large: 'url_large_img'
-            }
-        }
+const testState = {
+    profile: null,
+    status: null,
+
+    posts: [
+        {id: 1, text: "Hello React! It,s my first post!", likes: 20, comment: 5},
+        {id: 2, text: "Second post! I`am find.", likes: 5, comment: 2}
     ],
-    followingInProgress: []
+
+    dialogs: [
+        {id: 1, name: 'Alexandr'},
+        {id: 2, name: 'Anvar'}
+    ],
+
+    messages: [
+        {id: 1, message: 'Hi!', outgoing: false},
+        {id: 2, message: 'Hello!', outgoing: true}
+    ],
+
+    newMessageText: ''
 }
 
-test('Users-reducer: Set users', ()=> {
-
-    const users = [
-        {
-            id: 10001,
-            name: 'First user',
-            status: 'Working',
-            followed: true,
-            photos: {
-                small: 'url_small_img',
-                large: 'url_large_img'
-            }
+test('Profile reducer: set profile', () => {
+    const profile: TProfile = {
+        aboutMe: 'aboutMe',
+        contacts: {
+            vkontakte: 'vkontakte',
+            facebook: 'facebook'
         },
-        {
-            id: 10002,
-            name: 'Second user',
-            status: 'In vacation',
-            followed: false,
-            photos: {
-                small: 'url_small_img',
-                large: 'url_large_img'
-            }
-        },
-        {
-            id: 10003,
-            name: 'Third user',
-            status: 'In vacation',
-            followed: false,
-            photos: {
-                small: 'url_small_img',
-                large: 'url_large_img'
-            }
-        }
-    ]
-
-    const changedState = usersReducer(testState,setUsers(users))
-
-    expect(changedState.users.length).toBe(3)
-    expect(changedState.users).toEqual(users)
-    expect(testState).not.toEqual(changedState)
-})
-
-test('Users-reducer: Set init status', ()=> {
-
-    const changedState = usersReducer(testState,setInitStatus('TEST'))
-
-    expect(changedState.userInitialization).toBe('TEST')
-    expect(testState).not.toEqual(changedState)
-})
-
-test('Users-reducer: Subscribe to user', ()=> {
-
-    const changedState = usersReducer(testState,subscribeToUser(12))
-
-    expect(changedState.users[1].followed).toBeTruthy()
-    expect(changedState.users[1]).toEqual({
-        id: 12,
-        name: 'Second start user',
-        status: 'Dance',
-        followed: true,
+        lookingForAJob: true,
+        lookingForAJobDescription: 'lookingForAJobDescription',
+        fullName: 'TestName',
+        userId: 1,
         photos: {
-            small: 'url_small_img',
-            large: 'url_large_img'
+            small: 'small',
+            large: 'large'
         }
-    })
-    expect(testState).not.toEqual(changedState)
+    }
+
+
+    const result = profileReducer(testState, {type: SET_PROFILE, profile})
+
+    expect(result.profile).not.toBe(null)
+    expect(result.profile.fullName).toBe('TestName')
+    expect(result.profile.contacts.vkontakte).toBe('vkontakte')
+    expect(result).not.toEqual(testState)
+})
+
+test('Profile reducer: set status', () => {
+
+    const result = profileReducer(testState, {type: SET_STATUS, status: 'Test status'})
+
+    expect(result.status).not.toBe(null)
+    expect(result).not.toEqual(testState)
 })
 
 
-test('Users-reducer: Unsubscribe to user', ()=> {
+test('Profile reducer: Change new message area', () => {
 
-    const changedState = usersReducer(testState,unsubscribeFromUser(11))
+    const result = profileReducer(testState, {type: CHANGE_NEW_MESSAGE_AREA, value: 'text'})
 
-    expect(changedState.users[0].followed).toBeFalsy()
-    expect(changedState.users[0]).toEqual({
-        id: 11,
-        name: 'First start user',
-        status: 'Wait',
-        followed: false,
-        photos: {
-            small: 'url_small_img',
-            large: 'url_large_img'
-        }
-    })
-    expect(testState).not.toEqual(changedState)
+    expect(result.newMessageText).toBe('text')
+    expect(result).not.toEqual(testState)
 })
 
-test('Users-reducer: Set wait to subscribing', ()=> {
+test('Profile reducer: Send message', () => {
+    const testSendMessageState = {...testState, newMessageText: 'Message'}
+    const result = profileReducer(testSendMessageState, {type: SEND_MESSAGE})
 
-    const changedState = usersReducer(testState,setWaitToSubscribing(12))
-
-    expect(changedState.followingInProgress).toEqual([12])
-    expect(changedState.users[1]).toEqual({
-        id: 12,
-        name: 'Second start user',
-        status: 'Dance',
-        followed: false,
-        photos: {
-            small: 'url_small_img',
-            large: 'url_large_img'
-        }
-    })
-    expect(testState).not.toEqual(changedState)
-})
-
-test('Users-reducer: Remove wait to subscribing', ()=> {
-
-    const changedState = usersReducer(testState,setWaitToSubscribing(11))
-
-    expect(changedState.followingInProgress).toEqual([11])
-    expect(changedState.users[0]).toEqual({
-        id: 11,
-        name: 'First start user',
-        status: 'Wait',
-        followed: true,
-        photos: {
-            small: 'url_small_img',
-            large: 'url_large_img'
-        }
-    })
-    expect(testState).not.toEqual(changedState)
-})
-
-test('Users-reducer: Change search area', ()=> {
-
-    const changedState = usersReducer(testState, changeSearchArea('test'))
-
-    expect(changedState.term).toBe('test')
-    expect(testState).not.toEqual(changedState)
-})
-
-test('Users-reducer: Change showing users', ()=> {
-
-    const changedState = usersReducer(testState, changeShowingUsers(true))
-
-    expect(changedState.friend).toBeTruthy()
-    expect(testState).not.toEqual(changedState)
+    expect(result.messages.length).toBe(3)
+    expect(result.messages[2]).toEqual({id:3, message: 'Message', outgoing: true})
+    expect(result).not.toEqual(testSendMessageState)
 })

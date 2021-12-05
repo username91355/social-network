@@ -9,4 +9,12 @@
 
 .messages__messages {
     padding: 10px;
+    min-width: 300px;
+}
+
+.messages__messages > div {
+    background-color: darksalmon;
+    margin: 3px;
+    padding: 2px;
+    border-radius: 10px;
 }

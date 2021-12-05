@@ -2,12 +2,13 @@ import {AxiosResponse} from "axios";
 import {profileAPI} from "../data/serverAPI";
 
 //Action types
-const SET_PROFILE = 'SET_PROFILE'
-const GET_STATUS = 'GET_STATUS'
-const SET_STATUS = 'SET_STATUS'
+export const SET_PROFILE = 'SET_PROFILE'
+export const SET_STATUS = 'SET_STATUS'
+export const CHANGE_NEW_MESSAGE_AREA = 'CHANGE_NEW_MESSAGE_AREA'
+export const SEND_MESSAGE = 'SEND_MESSAGE'
 
 //State
-const initialState = {
+export const initialState = {
     profile: null,
     status: null,
 
@@ -26,28 +27,24 @@ const initialState = {
     ],
 
     messages: [
-        {id: 1, message: 'Hi!'},
-        {id: 2, message: 'Hello!'},
-        {id: 3, message: 'How are you?'},
-        {id: 4, message: 'I`m fine. How ary you?'},
-        {id: 5, message: 'I am OK.'},
-        {id: 6, message: 'OK. Maybe go to the walk?'},
-    ]
+        {id: 1, message: 'Hi!', outgoing: false},
+        {id: 2, message: 'Hello!', outgoing: true},
+        {id: 3, message: 'How are you?', outgoing: false},
+        {id: 4, message: 'I`m fine. How ary you?', outgoing: true},
+        {id: 5, message: 'I am OK.', outgoing: true},
+        {id: 6, message: 'OK. Maybe go to the walk?', outgoing: false},
+    ],
+
+    newMessageText: ''
 }
 
 //Reducer
-const profileReducer = (state: initialStateType = initialState, action: any) => {
+export const profileReducer = (state: initialStateType = initialState, action: any) => {
     switch (action.type) {
         case SET_PROFILE:
             return {
                 ...state,
                 profile: action.profile
-            }
-
-        case GET_STATUS:
-            return {
-                ...state,
-                status: action.status
             }
 
         case SET_STATUS:
@@ -56,15 +53,41 @@ const profileReducer = (state: initialStateType = initialState, action: any) => 
                 status: action.status
             }
 
+        case CHANGE_NEW_MESSAGE_AREA:
+            return {
+                ...state,
+                newMessageText: action.value
+            }
+
+        case SEND_MESSAGE:
+            const allMessageID = [...state.messages.map(p => p.id)]
+
+            const generateID = (id: number): number => {
+                return (allMessageID.some(i => +i === +id))
+                    ? generateID(id + 1)
+                    : id
+            }
+
+            return {
+                ...state,
+                messages: [...state.messages, {
+                    id: generateID(Math.max(...allMessageID)),
+                    message: state.newMessageText,
+                    outgoing: true
+                }],
+                newMessageText: ''
+            }
+
         default:
             return state
     }
 }
 
 //Action creator
-const setProfile = (profile: AxiosResponse<TProfile>) => ({type: SET_PROFILE, profile} as const)
-const getStatus = (status: AxiosResponse<string>) => ({type: GET_STATUS, status} as const)
-const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
+export const setProfile = (profile: AxiosResponse<TProfile>) => ({type: SET_PROFILE, profile} as const)
+export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
+export const changeNewMessageArea = (value: string) => ({type: CHANGE_NEW_MESSAGE_AREA, value} as const)
+export const sendMessage = () => ({type: SEND_MESSAGE} as const)
 
 //Thunk
 export const getProfileTC = (userID: number) => async (dispatch: any) => {
@@ -74,12 +97,12 @@ export const getProfileTC = (userID: number) => async (dispatch: any) => {
 
 export const getStatusTC = (userID: number) => async (dispatch: any) => {
     const response = await profileAPI.getStatus(userID)
-    dispatch(getStatus(response.data))
+    dispatch(setStatus(response.data))
 }
 
 export const setStatusTC = (status: string) => async (dispatch: any) => {
-    const response = await  profileAPI.setStatus(status)
-    if(response.data.resultCode === 0) {
+    const response = await profileAPI.setStatus(status)
+    if (response.data.resultCode === 0) {
         dispatch(setStatus(status))
     }
 }
@@ -104,10 +127,11 @@ type initialStateType = {
     posts: Array<TPost>
     dialogs: Array<TDialog>
     messages: Array<TMessage>
+    newMessageText: string
 }
 
 export type TContacts = {
-    [key: string] : string | null
+    [key: string]: string | null
 }
 
 type TPost = {
@@ -120,6 +144,7 @@ type TPost = {
 export type TMessage = {
     id: number
     message: string
+    outgoing: boolean
 }
 
 export type TDialog = {

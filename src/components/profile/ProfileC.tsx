@@ -61,7 +61,9 @@ const ProfileContainer = React.memo((props: TProps) => {
 
 const mapStateToProps = (state: AppStateType): TMSTProps => {
     return {
+        //@ts-ignore
         profile: state.profile.profile,
+        //@ts-ignore
         status: state.profile.status,
         authUserID: state.auth.id
     }
