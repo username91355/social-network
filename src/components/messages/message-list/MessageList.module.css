@@ -1,0 +1,23 @@
+.messages__container {
+    flex: 0 0 70%;
+    background-color:  #deb887;
+}
+
+.messages__outgoing_message {
+    display: grid;
+    grid-template-columns: 1fr 12fr 1fr;
+    background-color: darksalmon;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.messages__incoming_message {
+    display: grid;
+    grid-template-columns: 1fr 12fr 1fr;
+    background-color: darksalmon;
+    text-align: right;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+}

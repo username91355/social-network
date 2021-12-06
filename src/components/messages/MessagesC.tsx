@@ -1,16 +1,17 @@
 import { connect } from "react-redux";
 import Messages from "./Messages";
-import {changeNewMessageArea, sendMessage} from "../../redux/profile-reducer";
+import {changeNewMessageArea, sendMessage, setDialogsTC} from "../../redux/reducers/messages-reducer";
 
 const mapStateToProps = (state: any) => {
     return {
-        messages: state.profile.messages,
-        dialogs: state.profile.dialogs,
-        newMessageText: state.profile.newMessageText
+        dialogs: state.messages.dialogs,
+        messages: state.messages.messages,
+        newMessageText: state.messages.newMessageText
     }
 }
 
 export default connect(mapStateToProps, {
     changeNewMessageArea,
-    sendMessage
+    sendMessage,
+    setDialogsTC
 })(Messages)

@@ -34,6 +34,7 @@ const App = (props: any) => {
                     isAuth
                         ?
                         <Routes>
+                            <Route path='/' element={<Profile />}/>
                             <Route path='/profile' element={<Profile/>}/>
                             <Route path='/profile/:userID' element={<Profile/>}/>
                             <Route path='/users' element={<Users/>}/>

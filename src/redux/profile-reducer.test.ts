@@ -71,10 +71,10 @@ test('Profile reducer: Change new message area', () => {
 })
 
 test('Profile reducer: Send message', () => {
-    const testSendMessageState = {...testState, newMessageText: 'Message'}
+    const testSendMessageState = {...testState, newMessageText: 'MessageItem'}
     const result = profileReducer(testSendMessageState, {type: SEND_MESSAGE})
 
     expect(result.messages.length).toBe(3)
-    expect(result.messages[2]).toEqual({id:3, message: 'Message', outgoing: true})
+    expect(result.messages[2]).toEqual({id:3, message: 'MessageItem', outgoing: true})
     expect(result).not.toEqual(testSendMessageState)
 })

@@ -1,53 +1,48 @@
-import React from 'react';
-import styles from './Messages.module.css'
-import {sendMessage, TDialog, TMessage} from "../../redux/profile-reducer";
-import {NavLink} from "react-router-dom";
+import React, {useEffect} from 'react';
+import styles from './Messages.module.css';
+import DialogList from "./dialog-list/DialogList";
+import {useParams} from "react-router-dom";
+import MessageList from "./message-list/MessageList";
 
-const Messages = (props: TProps) => {
+const Messages = (props: any) => {
 
     const {
         messages,
         dialogs,
         newMessageText,
+        setDialogsTC,
         changeNewMessageArea,
         sendMessage
     } = props
 
-    // const params = useParams()
-    // const userID = params.userID
+    const userID = useParams().userID
 
-    const dialogsItems = dialogs.map(d => {
-        return <div key={d.id}>
-            <NavLink to={`/messages/${d.id}`}>{d.name}</NavLink>
-        </div>
-    })
+    useEffect(() => {
+        setDialogsTC()
+    }, dialogs)
 
-    const messagesItems = messages.map(d => {
-        return <div key={d.id} style={!d.outgoing
-            ? {textAlign: 'right'}
-            : {}}>{d.message}</div>
-    })
+    const messagesSort = userID ? messages[userID] : []
+
+    if (dialogs === []) {
+        setDialogsTC()
+    }
 
     return (
         <div className={styles.messages__wrapper}>
-            <div className={styles.messages__dialogs}>
-                {dialogsItems}
-            </div>
-            <div className={styles.messages__messages}>
-                {messagesItems}
-                <textarea value={newMessageText}
-                          onChange={(e) =>
-                              changeNewMessageArea(e.currentTarget.value)}
-                          placeholder={'Enter new message'}/>
-                <button onClick={sendMessage}>Send</button>
-            </div>
+            <DialogList dialogs={dialogs}/>
+            <MessageList dialogId={userID}
+                         messages={messagesSort}
+                         newMessageText={newMessageText}
+                         changeNewMessageArea={changeNewMessageArea}
+                         sendMessage={sendMessage}/>
         </div>
     );
 };
 
 type TProps = {
-    messages: Array<TMessage>
-    dialogs: Array<TDialog>
+    setDialogsTC: any
+    dialogs: any
+    messages: any
     newMessageText: string
     changeNewMessageArea: (value: string) => void
     sendMessage: () => void

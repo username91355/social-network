@@ -1,0 +1,23 @@
+.dialogs__container {
+    flex: 0 0 30%;
+}
+
+.dialogs__item {
+
+}
+
+.dialogs__link {
+
+}
+
+.dialogs__link_active {
+
+}
+
+.dialogs__link_active > div {
+    background-color:  #deb887
+}
+
+.dialogs__link_info > img {
+    border-radius: 50%;
+}

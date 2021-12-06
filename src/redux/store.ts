@@ -3,11 +3,13 @@ import {usersReducer} from "./users-reducer";
 import thunkMiddleware from 'redux-thunk'
 import authReducer from "./auth-reducer";
 import profileReducer from "./profile-reducer";
+import messagesReducer from "./reducers/messages-reducer";
 
 const rootReducers = combineReducers({
     auth: authReducer,
     users: usersReducer,
-    profile: profileReducer
+    profile: profileReducer,
+    messages: messagesReducer,
 })
 
 type RootReducerType = typeof rootReducers
