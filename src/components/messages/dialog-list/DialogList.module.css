@@ -7,17 +7,23 @@
 }
 
 .dialogs__link {
-
+    color: #F9F9FF;
+    text-decoration: none;
 }
 
 .dialogs__link_active {
-
+    color: #323030;
+    text-decoration: none;
 }
 
 .dialogs__link_active > div {
-    background-color:  #deb887
+    color: #F9F9FF;
+    background-color:  #283655;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
 }
 
 .dialogs__link_info > img {
+    margin: 5px;
     border-radius: 50%;
 }

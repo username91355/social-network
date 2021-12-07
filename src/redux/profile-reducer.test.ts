@@ -62,19 +62,19 @@ test('Profile reducer: set status', () => {
 })
 
 
-test('Profile reducer: Change new message area', () => {
-
-    const result = profileReducer(testState, {type: CHANGE_NEW_MESSAGE_AREA, value: 'text'})
-
-    expect(result.newMessageText).toBe('text')
-    expect(result).not.toEqual(testState)
-})
-
-test('Profile reducer: Send message', () => {
-    const testSendMessageState = {...testState, newMessageText: 'MessageItem'}
-    const result = profileReducer(testSendMessageState, {type: SEND_MESSAGE})
-
-    expect(result.messages.length).toBe(3)
-    expect(result.messages[2]).toEqual({id:3, message: 'MessageItem', outgoing: true})
-    expect(result).not.toEqual(testSendMessageState)
-})
+// test('Profile reducer: Change new message area', () => {
+//
+//     const result = profileReducer(testState, {type: CHANGE_NEW_MESSAGE_AREA, value: 'text'})
+//
+//     expect(result.newMessageText).toBe('text')
+//     expect(result).not.toEqual(testState)
+// })
+//
+// test('Profile reducer: Send message', () => {
+//     const testSendMessageState = {...testState, newMessageText: 'MessageItem'}
+//     const result = profileReducer(testSendMessageState, {type: SEND_MESSAGE})
+//
+//     expect(result.messages.length).toBe(3)
+//     expect(result.messages[2]).toEqual({id:3, message: 'MessageItem', outgoing: true})
+//     expect(result).not.toEqual(testSendMessageState)
+// })

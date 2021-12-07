@@ -1,4 +1,5 @@
 import {authAPI} from "../data/serverAPI";
+import {getProfileTC} from "./profile-reducer";
 
 const IS_AUTHORIZE = 'SocialNetwork/authReducer/IS_AUTHORIZE'
 
@@ -32,6 +33,7 @@ export const isAuthorizedTC = () => async (dispatch: any) => {
 
     if (response.data.resultCode === 0) {
         dispatch(isAuthorized(response.data.data))
+        dispatch(getProfileTC(response.data.data.id))
     } else {
         console.error('You are not authorized')
     }

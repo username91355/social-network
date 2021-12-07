@@ -27,12 +27,8 @@ const DialogList: React.FC<TProps> = props => {
                              style={{display: 'flex', alignItems: 'center'}}>
                             <img src={d.photos.small || avatar} alt="avatar"/>
                             <div>
-                                <div>
-                                    {d.name}
-                                </div>
-                                <div>
-                                    {d.status || 'Status not set'}
-                                </div>
+                                <h3>{d.name}</h3>
+                                <div>{d.status || 'Status not set'}</div>
                             </div>
                         </div>
                     </NavLink>

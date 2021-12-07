@@ -1,5 +1,5 @@
 .header_wrapper {
     height: 60px;
-    background-color: burlywood;
+    background: linear-gradient(#090a0c, #1E1F26);
     grid-area: h;
 }

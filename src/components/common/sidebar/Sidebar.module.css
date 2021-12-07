@@ -2,5 +2,19 @@
     display: flex;
     flex-direction: column;
     grid-area: s;
-    background-color: darksalmon;
+    background-color: #1E1F26;
+}
+
+.sidebar_link {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: inherit;
+    text-decoration: none;
+}
+
+.sidebar_link_active {
+    font-size: 1.2em;
+    font-weight: 500;
+    color: #b6cff3;
+    text-decoration: none;
 }

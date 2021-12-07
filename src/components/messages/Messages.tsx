@@ -9,6 +9,8 @@ const Messages = (props: any) => {
     const {
         messages,
         dialogs,
+        interlocutors,
+        authUserPhoto,
         newMessageText,
         setDialogsTC,
         changeNewMessageArea,
@@ -31,6 +33,8 @@ const Messages = (props: any) => {
         <div className={styles.messages__wrapper}>
             <DialogList dialogs={dialogs}/>
             <MessageList dialogId={userID}
+                         dialogs={dialogs}
+                         authUserPhoto={authUserPhoto}
                          messages={messagesSort}
                          newMessageText={newMessageText}
                          changeNewMessageArea={changeNewMessageArea}
