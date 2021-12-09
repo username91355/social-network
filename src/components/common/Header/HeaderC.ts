@@ -1,11 +1,10 @@
 import { connect } from "react-redux";
 import Header from "./Header";
-import {isAuthorizedTC} from "../../../redux/auth-reducer";
 import {AppStateType} from "../../../redux/store";
 
 type TMSTPHeader = {
-    isAuth: boolean
     login: string
+    isAuth: boolean
 }
 
 const mapStateToProps = (state: AppStateType): TMSTPHeader => {
@@ -15,6 +14,4 @@ const mapStateToProps = (state: AppStateType): TMSTPHeader => {
     }
 }
 
-export default connect(mapStateToProps,{
-    isAuthorizedTC
-})(Header)
+export default connect(mapStateToProps,{})(Header)

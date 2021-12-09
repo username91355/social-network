@@ -1,0 +1,16 @@
+.content__wrapper {
+    grid-area: c;
+    background-color: #45454b;
+    display: grid;
+    grid-template-areas:
+            's c c'
+            '. c c';
+    grid-template-columns: 2fr 10fr;
+    grid-template-rows: 200px 100%;
+    grid-column-gap: 10px;
+}
+
+.content__content {
+    grid-area: c;
+    background-color: #1E1F26;
+}

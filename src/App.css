@@ -1,20 +1,15 @@
 .app_wrapper {
-    width: 1080px;
+    max-width: 1080px;
     margin: 0 auto;
     display: grid;
     grid-template-areas:
-            'h h h'
-            's c c'
-            '. c c';
-    grid-template-columns: 2fr 5fr 5fr;
-    grid-template-rows: 60px 150px 100%;
-    grid-gap: 10px;
+            'h h'
+            'c c';
+    grid-template-columns: 2fr 10fr;
+    grid-template-rows: 60px 100vh;
+    row-gap: 10px;
 }
 
-.app_content {
-    grid-area: c;
-    background-color: #1E1F26;
-}
 
 /*Palitra {*/
 /*#D0E1F9 - Фиолетово-голубой*/

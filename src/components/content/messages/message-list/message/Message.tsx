@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Message.module.css';
-import avatar from './../../../../assets/img/avatar-small.png'
+import avatar from '../../../../../assets/img/avatar-small.png'
 
 type TProps = {
     outgoing: boolean

@@ -5,7 +5,7 @@ import {
     getUsersThunkCreator,
     setFollowedStatusThunkCreator,
     setUnfollowedStatusThunkCreator
-} from "../../redux/users-reducer";
+} from "../../../redux/users-reducer";
 import {
     selectorCount,
     selectorFriend,
@@ -14,7 +14,7 @@ import {
     selectorUsers,
     selectorUsersInit
 } from "./UsersSelectors";
-import {AppStateType} from "../../redux/store";
+import {AppStateType} from "../../../redux/store";
 
 const MapStateToProps = (store: AppStateType) => {
     return {

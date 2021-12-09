@@ -1,11 +1,11 @@
 import React, {ChangeEvent, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import {initializationStatus, UserType} from "../../redux/users-reducer";
-import avatar from './../../assets/img/avatar.png'
+import {initializationStatus, UserType} from "../../../redux/users-reducer";
+import avatar from '../../../assets/img/avatar.png'
 import styles from './Users.module.css'
 import {UsersPropsType} from './UsersC';
-import Preloader from "../common/preloader/Preloader";
-import Search from "../common/Search/Search";
+import Preloader from "../../common/preloader/Preloader";
+import Search from "../../common/Search/Search";
 
 const Users: React.FC<UsersPropsType> = props => {
     console.log('Users')

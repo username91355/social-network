@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "../Profile.module.css";
-import {TContacts} from "../../../redux/profile-reducer";
+import {TContacts} from "../../../../redux/profile-reducer";
 import Contact from "./сontact/Contact";
 
 

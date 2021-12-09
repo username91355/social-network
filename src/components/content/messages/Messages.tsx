@@ -31,7 +31,7 @@ const Messages = (props: any) => {
 
     return (
         <div className={styles.messages__wrapper}>
-            <DialogList dialogs={dialogs}/>
+            <DialogList userList={dialogs}/>
             <MessageList dialogId={userID}
                          dialogs={dialogs}
                          authUserPhoto={authUserPhoto}

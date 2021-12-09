@@ -1,22 +1,22 @@
 import {NavLink} from "react-router-dom";
 import styles from "./DialogList.module.css";
 import React from "react";
-import avatar from '../../../assets/img/avatar-small.png'
-import {TUser} from "../../../redux/reducers/messages-reducer";
+import avatar from '../../../../assets/img/avatar-small.png'
+import {TUser} from "../../../../redux/reducers/messages-reducer";
 
 type TProps = {
-    dialogs: Array<TUser>
+    userList: Array<TUser>
 }
 
 const DialogList: React.FC<TProps> = props => {
 
     const {
-        dialogs
+        userList
     } = props
 
     return <div className={styles.dialogs__container}>
         {
-            dialogs.map(d => {
+            userList.map(d => {
                 return <div key={d.id} className={styles.dialogs__item}>
 
                     <NavLink to={`/messages/${d.id}`}
