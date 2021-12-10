@@ -1,14 +1,27 @@
 import styles from "./MessageList.module.css";
-import {ChangeEvent} from "react";
+import React, {ChangeEvent} from "react";
 import Message from "./message/Message";
+import {TMessage, TUser} from "../../../../redux/reducers/messages-reducer";
 
-const MessageList = (props: any) => {
+type TProps = {
+    dialogId: string
+    dialogs: Array<TUser>
+    messages: Array<TMessage>
+    authUserPhoto: string
+    authUserName: string
+    newMessageText: string
+    changeNewMessageArea: (value: string) => void
+    sendMessage: (dialogID: number) => void
+}
+
+const MessageList: React.FC<TProps> = props => {
 
     const {
         dialogId,
         dialogs,
         messages,
         authUserPhoto,
+        authUserName,
         newMessageText,
         changeNewMessageArea,
         sendMessage
@@ -16,31 +29,38 @@ const MessageList = (props: any) => {
 
     const interlocutors = dialogs.filter((i: any) => (i.id === +dialogId))
 
+    const textAreaOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        changeNewMessageArea(e.currentTarget.value)
+    }
+    const onClickButtonsendMessage = () => {
+        sendMessage(+dialogId)
+    }
+
     if (messages.length === 0) {
-        return <div>Select user for start dialog</div>
+        return <div className={styles.messages__messages_window_alt}>Select user for start dialog</div>
     }
 
     return (
         <div className={styles.messages__container}>
             <div className={styles.messages__messages_window}>
                 {
-                    messages.map((d: any) => {
-                        return <Message outgoing={d.outgoing}
+                    messages.map((d,i) => {
+                        return <Message key={i}
+                                        outgoing={d.outgoing}
                                         message={d.message}
                                         authUserPhoto={authUserPhoto}
+                                        authUserName={authUserName}
                                         interlocutors={interlocutors}/>
                     })
                 }
             </div>
-            <hr/>
             <textarea className={styles.messages__textarea}
                       value={newMessageText}
-                      onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                          changeNewMessageArea(e.currentTarget.value)}
+                      onChange={textAreaOnChange}
                       placeholder={'Enter new message'}/>
             <div className={styles.messages__button_container}>
-                <button className={styles.messages__button_container_btn} onClick={() => sendMessage(dialogId)}>Send
-                </button>
+                <button className={styles.messages__button_container_btn}
+                        onClick={onClickButtonsendMessage}>Send</button>
             </div>
         </div>
     )

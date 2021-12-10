@@ -25,5 +25,6 @@
 
 .dialogs__link_info > img {
     margin: 5px;
+    width: 70px;
     border-radius: 50%;
 }

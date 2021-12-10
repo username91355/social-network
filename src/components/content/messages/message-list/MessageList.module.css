@@ -7,9 +7,18 @@
 .messages__messages_window {
     height: 60vh;
     overflow: auto;
+    overflow-scrolling: revert;
     background-color: #4D648D;
     border-radius: 0.3em;
     padding: 0.5em;
+}
+
+.messages__messages_window_alt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 60vh;
 }
 
 .messages__textarea {

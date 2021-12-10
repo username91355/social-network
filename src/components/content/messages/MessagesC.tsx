@@ -1,12 +1,14 @@
 import { connect } from "react-redux";
 import Messages from "./Messages";
 import {changeNewMessageArea, sendMessage, setDialogsTC} from "../../../redux/reducers/messages-reducer";
-import {getMyPhoto} from "./messages-selector";
+import {getMyName, getMyPhoto } from "../../../utils/selectors/messages-selector";
+import {AppStateType} from "../../../redux/store";
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: AppStateType) => {
     return {
         dialogs: state.messages.dialogs,
         authUserPhoto: getMyPhoto(state),
+        authUserName: getMyName(state),
         messages: state.messages.messages,
         newMessageText: state.messages.newMessageText
     }

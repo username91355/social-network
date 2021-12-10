@@ -1,10 +1,10 @@
 import React, {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "../../redux/store";
-import Login from "../common/login/login";
 import Preloader from "../common/preloader/Preloader";
 import {isAuthorizedTC} from "../../redux/auth-reducer";
 import Content from "./Content";
+import Login from "../common/login/Login";
 
 const ContentWithAuth = () => {
 

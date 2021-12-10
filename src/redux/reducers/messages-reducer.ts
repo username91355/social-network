@@ -86,7 +86,7 @@ export const messagesReducer = (state: any = initialState, action: any) => {
 
 //Action creators
 export const changeNewMessageArea = (value: string) => ({type: CHANGE_NEW_MESSAGE_AREA, value} as const)
-export const sendMessage = (userId: number, message: string) => ({type: SEND_MESSAGE, userId, message} as const)
+export const sendMessage = (userId: number) => ({type: SEND_MESSAGE, userId} as const)
 export const setDialogs = (list: any) => ({type: SET_DIALOGS, list} as const)
 
 //Thunk
@@ -98,7 +98,7 @@ export const setDialogsTC = () => async (dispatch: any) => {
 //TYPSCRIPT
 type initialStateType = {
     dialogs: Array<TUser>
-    messages: Array<TMessage>
+    messages: TMessages
     newMessageText: string
 }
 
@@ -114,7 +114,11 @@ export type TUser = {
     uniqueUrlName: string | null
 }
 
-type TMessage = {
+export type TMessages = {
+    [key: number]: Array<TMessage>
+}
+
+export type TMessage = {
     id: number
     message: string
     outgoing: boolean
