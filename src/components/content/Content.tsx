@@ -5,8 +5,9 @@ import Users from "./users/UsersC";
 import Messages from "./messages/MessagesC";
 import React from "react";
 import styles from './Content.module.css';
+import Login from "../common/login/Login";
 
-const Content = () => {
+const Content: React.FC = () => {
     return <div className={styles.content__wrapper}>
         <Sidebar/>
         <div className={styles.content__content}>
@@ -17,6 +18,7 @@ const Content = () => {
                 <Route path='/users' element={<Users/>}/>
                 <Route path='/messages' element={<Messages/>}/>
                 <Route path='/messages/:userID' element={<Messages/>}/>
+                <Route path='/login' element={<Login/>}/>
             </Routes>
         </div>
     </div>

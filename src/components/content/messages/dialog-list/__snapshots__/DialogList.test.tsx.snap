@@ -24,7 +24,9 @@ Object {
                 src="smallAlice"
               />
               <div>
-                <h3>
+                <h3
+                  class="dialogs__link_info_name"
+                >
                   Alice
                 </h3>
                 <div>
@@ -50,7 +52,9 @@ Object {
                 src="smallAlex"
               />
               <div>
-                <h3>
+                <h3
+                  class="dialogs__link_info_name"
+                >
                   Alex
                 </h3>
                 <div>
@@ -83,7 +87,9 @@ Object {
               src="smallAlice"
             />
             <div>
-              <h3>
+              <h3
+                class="dialogs__link_info_name"
+              >
                 Alice
               </h3>
               <div>
@@ -109,7 +115,9 @@ Object {
               src="smallAlex"
             />
             <div>
-              <h3>
+              <h3
+                class="dialogs__link_info_name"
+              >
                 Alex
               </h3>
               <div>

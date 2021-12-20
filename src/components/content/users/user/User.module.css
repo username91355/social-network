@@ -1,0 +1,28 @@
+.user_wrapper {
+    display: flex;
+    margin: 5px 10px;
+}
+
+.user_img_box > img {
+    width: 50px;
+}
+
+.user_info_box {
+    display: flex;
+    flex-direction: column;
+}
+
+.user_info_name {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    color: #F9F9FF;
+}
+
+.user_info_name:hover {
+    color: #b1cdef;
+}
+
+.user_button_box {
+    margin-left: auto;
+}

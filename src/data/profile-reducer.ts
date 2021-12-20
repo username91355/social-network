@@ -1,5 +1,5 @@
 import {AxiosResponse} from "axios";
-import {profileAPI} from "../data/serverAPI";
+import {profileAPI} from "../api/serverAPI";
 
 //Action types
 export const SET_PROFILE = 'SET_PROFILE'

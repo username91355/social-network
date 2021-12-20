@@ -1,29 +1,81 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Search component test Search snapshot 1`] = `
+exports[`MessageList User snapshot 1`] = `
 Object {
   "asFragment": [Function],
   "baseElement": <body>
     <div>
-      <label>
-        <input
-          class="input"
-          placeholder="search..."
-          type="text"
-          value="test"
-        />
-      </label>
+      <div
+        class="user_wrapper"
+      >
+        <div
+          class="user_img_box"
+        >
+          <img
+            alt="avatar"
+            src="small"
+          />
+        </div>
+        <div
+          class="user_info_box"
+        >
+          <a
+            class="user_info_name"
+            href="/profile/1"
+          >
+            User
+          </a>
+          <span>
+            status
+          </span>
+        </div>
+        <div
+          class="user_button_box"
+        >
+          <button
+            class="btn false"
+          >
+            Unfollow
+          </button>
+        </div>
+      </div>
     </div>
   </body>,
   "container": <div>
-    <label>
-      <input
-        class="input"
-        placeholder="search..."
-        type="text"
-        value="test"
-      />
-    </label>
+    <div
+      class="user_wrapper"
+    >
+      <div
+        class="user_img_box"
+      >
+        <img
+          alt="avatar"
+          src="small"
+        />
+      </div>
+      <div
+        class="user_info_box"
+      >
+        <a
+          class="user_info_name"
+          href="/profile/1"
+        >
+          User
+        </a>
+        <span>
+          status
+        </span>
+      </div>
+      <div
+        class="user_button_box"
+      >
+        <button
+          class="btn false"
+        >
+          Unfollow
+        </button>
+      </div>
+    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],

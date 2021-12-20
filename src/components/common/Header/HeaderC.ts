@@ -1,6 +1,8 @@
 import { connect } from "react-redux";
 import Header from "./Header";
-import {AppStateType} from "../../../redux/store";
+import {AppStateType} from "../../../data/store";
+import { compose } from "redux";
+import React from "react";
 
 type TMSTPHeader = {
     login: string
@@ -14,4 +16,7 @@ const mapStateToProps = (state: AppStateType): TMSTPHeader => {
     }
 }
 
-export default connect(mapStateToProps,{})(Header)
+export default compose<React.ComponentType>(
+    connect(mapStateToProps,{}),
+    React.memo,
+)(Header)

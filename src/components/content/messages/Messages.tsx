@@ -3,7 +3,7 @@ import styles from './Messages.module.css';
 import DialogList from "./dialog-list/DialogList";
 import {useParams} from "react-router-dom";
 import MessageList from "./message-list/MessageList";
-import {TMessages, TUser} from "../../../redux/reducers/messages-reducer";
+import {TMessages, TUser} from "../../../data/reducers/messages-reducer";
 
 type TProps = {
     dialogs: Array<TUser>

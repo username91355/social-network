@@ -1,4 +1,4 @@
-import {authAPI} from "../data/serverAPI";
+import {authAPI} from "../api/serverAPI";
 import {getProfileTC} from "./profile-reducer";
 
 const IS_AUTHORIZE = 'SocialNetwork/authReducer/IS_AUTHORIZE'

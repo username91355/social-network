@@ -1,7 +1,8 @@
 import styles from "./MessageList.module.css";
 import React, {ChangeEvent} from "react";
 import Message from "./message/Message";
-import {TMessage, TUser} from "../../../../redux/reducers/messages-reducer";
+import {TMessage, TUser} from "../../../../data/reducers/messages-reducer";
+import Button from "../../../common/button/Button";
 
 type TProps = {
     dialogId: string
@@ -59,8 +60,7 @@ const MessageList: React.FC<TProps> = props => {
                       onChange={textAreaOnChange}
                       placeholder={'Enter new message'}/>
             <div className={styles.messages__button_container}>
-                <button className={styles.messages__button_container_btn}
-                        onClick={onClickButtonsendMessage}>Send</button>
+                <Button title={'Send'} onClick={onClickButtonsendMessage} />
             </div>
         </div>
     )

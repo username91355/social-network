@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useState} from 'react'
 import avatar from '../../../assets/img/avatar.png'
 import styles from './Profile.module.css'
-import {TProfile} from '../../../redux/profile-reducer'
+import {TProfile} from '../../../data/profile-reducer'
 import Preloader from "../../common/preloader/Preloader";
 import ContactList from './contact-list/ContactList';
 

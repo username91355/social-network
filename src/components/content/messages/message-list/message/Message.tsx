@@ -1,7 +1,7 @@
 import React from 'react';
 import IncomingMessage from './incoming-message/IncomingMessage';
 import OutgoingMessage from './outgoing-message/OutgoingMessage';
-import {TUser} from "../../../../../redux/reducers/messages-reducer";
+import {TUser} from "../../../../../data/reducers/messages-reducer";
 
 export type TProps = {
     outgoing: boolean

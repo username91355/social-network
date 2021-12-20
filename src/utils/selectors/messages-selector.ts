@@ -1,4 +1,4 @@
-import {AppStateType} from "../../redux/store";
+import {AppStateType} from "../../data/store";
 
 export const getMyPhoto = (state: AppStateType) => {
     if(state.profile.profile) {

@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
-import {AppStateType} from "../../../redux/store";
+import {AppStateType} from "../../../data/store";
 import React, {useEffect} from 'react';
-import {getProfileTC, getStatusTC, setStatusTC, TProfile} from "../../../redux/profile-reducer";
+import {getProfileTC, getStatusTC, setStatusTC, TProfile} from "../../../data/profile-reducer";
 import {useParams} from "react-router-dom";
 import Profile from "./Profile";
 
@@ -19,8 +19,6 @@ type TMDTProps = {
     getStatusTC: (userId: number) => void
     setStatusTC: (status: string) => void
 }
-
-//const ProfileMemo = React.memo(Profile)
 
 const ProfileContainer = React.memo((props: TProps) => {
 
@@ -47,10 +45,6 @@ const ProfileContainer = React.memo((props: TProps) => {
         }
 
     }, [getProfileTC, getStatusTC, authUserID, params.userID])
-
-    // useEffect(() => {
-    //
-    // })
 
     return <>
         <Profile profile={profile}

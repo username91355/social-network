@@ -1,24 +1,6 @@
-.user_wrapper {
-    display: flex;
-}
-
-.user_img_box > img {
-    width: 50px;
-}
-
-.user_info_box {
-    display: flex;
-    flex-direction: column;
-}
-
-.user_button_box {
-    margin-left: auto;
-}
-
 .users_filter_buttons {
-
-}
-
-.active_filter_button {
-    background-color: darksalmon;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    align-items: center;
 }

@@ -1,4 +1,4 @@
-import {TUser} from "../../../../redux/reducers/messages-reducer";
+import {TUser} from "../../../../data/reducers/messages-reducer";
 import {render, screen} from "@testing-library/react";
 import DialogList from "./DialogList";
 import {BrowserRouter} from "react-router-dom";

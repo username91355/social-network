@@ -1,7 +1,7 @@
 import styles from "./IncomingMessage.module.css"
 import avatar from "../../../../../../assets/img/avatar-small.png";
 import React from "react";
-import {TUser} from "../../../../../../redux/reducers/messages-reducer";
+import {TUser} from "../../../../../../data/reducers/messages-reducer";
 
 export type TProps = {
     message: string

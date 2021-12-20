@@ -1,4 +1,4 @@
-import {usersAPI} from "../data/serverAPI"
+import {usersAPI} from "../api/serverAPI"
 
 //Action types(constants)
 const SET_USERS = 'SocialNetwork/usersReducer/SET_USER'

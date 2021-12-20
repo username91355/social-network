@@ -11,6 +11,10 @@
     text-decoration: none;
 }
 
+.dialogs__link_info_name:hover {
+    color: #788fb9;
+}
+
 .dialogs__link_active {
     color: #323030;
     text-decoration: none;

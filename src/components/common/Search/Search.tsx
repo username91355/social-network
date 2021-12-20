@@ -1,4 +1,5 @@
 import React, {ChangeEvent} from 'react';
+import styles from './Search.module.css'
 
 type TProps = {
     value: string,
@@ -22,9 +23,10 @@ const Search: React.FC<TProps> = props => {
             <input type={"text"}
                    value={value}
                    onChange={onChange}
-                   placeholder={placeholder}/>
+                   placeholder={placeholder}
+                   className={styles.input}/>
         </label>
     );
 };
 
-export default Search;
+export default React.memo(Search);

@@ -1,4 +1,4 @@
-import {usersAPI} from "../../data/serverAPI";
+import {usersAPI} from "../../api/serverAPI";
 
 //Action types
 export const SET_DIALOGS = 'SET_DIALOGS'
