@@ -1,14 +1,14 @@
 import React from 'react';
 import WithAuth from "../../hoc/WithAuth";
 
-const Profile = () => {
+const Messages = () => {
     return (
         <WithAuth>
             <div>
-                Profile
+                Messages
             </div>
         </WithAuth>
     );
 };
 
-export default Profile;
+export default Messages;

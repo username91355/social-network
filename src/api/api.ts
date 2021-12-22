@@ -16,15 +16,21 @@ export const serverAPI = {
             .then(res => res.data)
     },
 
-    login(email: string, password: string, rememberMe: boolean, captcha: boolean = false): Promise<IResponse<IUserID>> {
+    login(email: string, password: string, rememberMe: boolean, captcha: boolean = false): Promise<IResponse<TUserID>> {
         return instance
-            .post<IResponse<IUserID>>('/auth/login', {email,password,rememberMe,captcha})
+            .post<IResponse<TUserID>>('/auth/login', {email,password,rememberMe,captcha})
             .then(res => res.data)
     },
 
     logout(): Promise<IResponse> {
         return instance
             .delete<IResponse>('/auth/login')
+            .then(res => res.data)
+    },
+
+    getUser(count: number, page: number, term: string, friend: boolean | null = null): Promise<IGetUserResponse> {
+        return instance
+            .get<IGetUserResponse>(`/users?count=${count}&page=${page}&term=${term}&friend=${friend}`)
             .then(res => res.data)
     }
 }
@@ -42,4 +48,22 @@ export interface IMe {
     email:string
 }
 
-type IUserID = { id: number }
+type TUserID = { id: number }
+
+interface IGetUserResponse {
+    items: User[]
+    totalCount: number
+    error: string | null
+}
+
+export interface User {
+    name: string
+    id: number
+    uniqueUrlName: string | null,
+    photos: {
+        small: string | null,
+        large: string | null
+    },
+    status: string | null,
+    followed: boolean
+}

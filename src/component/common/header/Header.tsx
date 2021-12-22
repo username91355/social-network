@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface IProps {
     login: string | null
@@ -14,8 +15,13 @@ const Header: React.FC<IProps> = props => {
 
     return (
         <header>
-            <span>{login}</span>
-            <button onClick={logoutHandler}>Exit</button>
+            {login
+                ? <div>
+                    <span>{login}</span>
+                    <button onClick={logoutHandler}>Exit</button>
+                </div>
+                : <Link to={'/login'}>Login</Link>
+            }
         </header>
     );
 };
