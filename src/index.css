@@ -7,7 +7,6 @@
 }
 
 body {
-  font-size: calc(14px + 0.5vh);
   font-family: sans-serif;
-  color: black;
+  font-size: calc(16px + .5vh);
 }
