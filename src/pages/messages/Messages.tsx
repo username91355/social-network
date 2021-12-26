@@ -1,12 +1,10 @@
 import React from 'react';
-import WithAuth from "../../hoc/WithAuth";
+import {WithAuth} from "../../WithAuth";
 
 const Messages = () => {
     return (
         <WithAuth>
-            <div>
-                Messages
-            </div>
+            Messages
         </WithAuth>
     );
 };

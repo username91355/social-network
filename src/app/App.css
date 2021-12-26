@@ -1,0 +1,34 @@
+.app__wrapper {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-areas:
+            'h h'
+            'n m'
+            '. m'
+            'f f';
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 60px auto auto auto;
+    grid-gap: 10px;
+}
+
+header {
+    grid-area: h;
+    background-color: tomato;
+}
+
+nav {
+    grid-area: n;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    grid-area: m;
+    min-height: 100vh;
+}
+
+footer {
+    text-align: center;
+    grid-area: f;
+}

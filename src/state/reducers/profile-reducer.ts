@@ -54,10 +54,34 @@ export const profileInitialization = (userId: number): ThunkType => async dispat
 
     if(result) {
         dispatch(setProfile(result))
+        await dispatch(getStatus(result.userId))
         dispatch(setProfileInitStatus(ProfileStatus.SUCCESS))
     } else {
         dispatch(setProfileInitStatus(ProfileStatus.FAILED))
     }
+}
+
+export const getStatus = (userId: number): ThunkType => async dispatch => {
+    dispatch(setProfileInitStatus(ProfileStatus.LOADING))
+    const userStatus = await serverAPI.getProfileStatus(userId)
+
+    if(userStatus) {
+        dispatch(setStatus(userStatus))
+    } else {
+        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+    }
+}
+
+export const changeStatus = (status: string): ThunkType => async dispatch => {
+
+    const result = await serverAPI.setProfileStatus(status)
+
+    if(result.resultCode === 0) {
+        dispatch(setStatus(status))
+    } else {
+        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+    }
+
 }
 
 //types

@@ -109,10 +109,10 @@ export interface IMe {
 interface IGetUser {
     items: IUser[]
     totalCount: number
-    error: string
+    error: string | null
 }
 
-interface IUser {
+export interface IUser {
     id: number
     name: string
     status: string
