@@ -17,6 +17,22 @@ const iState = {
     totalCount: null,
     users: [],
     subscriptionProcess: [],
+    // dialogs: [
+    //     {id: 1, name: 'Alexandr'},
+    //     {id: 2, name: 'Anvar'},
+    //     {id: 3, name: 'Anna'},
+    //     {id: 4, name: 'Igor'},
+    //     {id: 5, name: 'Lena'},
+    // ],
+    //
+    // messages: [
+    //     {id: 1, message: 'Hi!'},
+    //     {id: 2, message: 'Hello!'},
+    //     {id: 3, message: 'How are you?'},
+    //     {id: 4, message: 'I`m fine. How ary you?'},
+    //     {id: 5, message: 'I am OK.'},
+    //     {id: 6, message: 'OK. Maybe go to the walk?'},
+    // ]
 }
 
 //reducer
@@ -25,7 +41,8 @@ export const usersReducer = (state: IUsersState = iState, action: TUsersActions)
         case SET_USERS:
             return {
                 ...state,
-                users: action.users
+                users: action.users,
+                totalCount: action.totalUsers
             }
         case SET_SUBSCRIPTION_STATUS:
             return {
@@ -53,7 +70,7 @@ export const usersReducer = (state: IUsersState = iState, action: TUsersActions)
 }
 
 //action creators
-const setUsers = (users: IUser[]) => ({type: SET_USERS, users} as const)
+const setUsers = (users: IUser[], totalUsers: number) => ({type: SET_USERS, users, totalUsers} as const)
 const setSubscriptonStatus = (userId: number) => ({type: SET_SUBSCRIPTION_STATUS, userId} as const)
 const removeSubscriptonStatus = (userId: number) => ({type: REMOVE_SUBSCRIPTION_STATUS, userId} as const)
 const addFriend = (userId: number) => ({type: ADD_TO_FRIENDS, userId} as const)
@@ -64,7 +81,7 @@ export const getUsers = (count: number, page: number, term: string, friend: bool
     const result = await serverAPI.getUsers(count, page, term, friend)
 
     if (!result.error) {
-        dispatch(setUsers(result.items))
+        dispatch(setUsers(result.items, result.totalCount))
     }
 }
 

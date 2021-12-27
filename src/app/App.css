@@ -14,21 +14,26 @@
 
 header {
     grid-area: h;
-    background-color: tomato;
 }
 
 nav {
     grid-area: n;
     display: flex;
     flex-direction: column;
+    position: sticky;
+    top: 0px;
 }
 
 main {
     grid-area: m;
     min-height: 100vh;
+    background-color: #001530;
 }
 
 footer {
     text-align: center;
     grid-area: f;
+    padding: 30px;
+    background-color: #001530;
+    color: #f0f2f5;
 }

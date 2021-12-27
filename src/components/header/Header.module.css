@@ -1,0 +1,24 @@
+.header__wrapper {
+    background-color: #001530;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em;
+}
+
+.header__logo {
+    width: 40px;
+    background-color: #f0f2f5;
+    padding: 2px;
+    border-radius: 20%;
+}
+
+.header__mobile_menu {
+    display: none;
+}
+
+.header__login {
+    color: #f0f2f5;
+    padding: 10px;
+}
+

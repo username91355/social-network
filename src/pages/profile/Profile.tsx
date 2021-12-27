@@ -7,6 +7,9 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Preloader} from "../../components/preloader/Preloader";
 import {EditableSpan} from "../../components/editeble-span/EditableSpan";
 import {ContactList} from './contact-list/ContactList';
+import {Button, Form} from "antd";
+import TextArea from "antd/es/input/TextArea";
+import {Post} from './post/Post';
 
 export const Profile = () => {
 
@@ -17,22 +20,24 @@ export const Profile = () => {
     const profile = useSelector((state: TAppState) => state.profile.profile)
     const profileStatus = useSelector((state: TAppState) => state.profile.status)
     const profileInitStatus = useSelector((state: TAppState) => state.profile.profileStatus)
+    const posts = useSelector((state: TAppState) => state.profile.posts)
+
+
+    let userId: number | null = Number(params.userId)
+    if (!userId) {
+        userId = id
+        if (!userId) {
+            navigate('/login')
+        }
+    }
 
     useEffect(() => {
-        let userId: number | null = params.userId
-            ? parseInt(params.userId, 10)
-            : null
-        if (!userId) {
-            userId = id
-            if (!userId) {
-                navigate('/login')
-            }
-        }
+
 
         if (userId) {
             dispatch(profileInitialization(userId))
         }
-    }, [dispatch])
+    }, [dispatch, userId])
 
     const changeUserStatus = (value: string) => {
         if (profileStatus !== value) {
@@ -44,18 +49,37 @@ export const Profile = () => {
     if (!profile) return <Preloader/>
     return (
         <WithAuth>
-            <div>{(profileInitStatus === ProfileStatus.IDLE || profileInitStatus === ProfileStatus.LOADING || !profile)
+            <div style={{color: '#f0f2f5'}}>{(profileInitStatus === ProfileStatus.IDLE || profileInitStatus === ProfileStatus.LOADING)
                 ? <Preloader/>
-                : <div>
-                    <img src={profile?.photos?.large || ''} alt='avatar'/>
-                    <div>{profile?.fullName}</div>
-                    <EditableSpan profileStatus={profileStatus} changeUserStatus={changeUserStatus}/>
-                    <div>{profile?.lookingForAJob}</div>
-                    <div>{profile?.lookingForAJobDescription}</div>
-                    <div>{profile?.aboutMe}</div>
+                : <div >
+                    <div style={{display: 'flex'}}>
+                        <img style={{width: '150px', borderRadius: '50%'}}
+                             src={profile.photos.large || "https://joeschmoe.io/api/v1/random"}/>
+                        <div>
+                            <div><h2 style={{color: '#f0f2f5'}}>{profile?.fullName}</h2></div>
+                            <EditableSpan profileStatus={profileStatus} changeUserStatus={changeUserStatus}/>
+                            <div>{profile?.lookingForAJob}</div>
+                            <div>{profile?.lookingForAJobDescription}</div>
+                            <div>{profile?.aboutMe}</div>
+                        </div>
+                    </div>
                     <ContactList contacts={profile?.contacts}/>
+                        <Form>
+                            <Form.Item>
+                                <TextArea rows={4} onChange={()=>{}} value={'value'}/>
+                            </Form.Item>
+                            <Form.Item>
+                                <Button htmlType="submit" onClick={()=>{}} type="primary">
+                                    Add Post
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    {profile.userId === id && posts.map(i => {
+                        return <Post key={i.id} text={i.text} postLikes={i.likes} postComment={i.comment}/>
+                    })}
                 </div>
             }</div>
         </WithAuth>
     );
 };
+

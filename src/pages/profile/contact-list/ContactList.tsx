@@ -20,7 +20,7 @@ export const ContactList: React.FC<IProps> = props => {
 
     return (
         <div>
-            <b>Contacts</b>
+            <h3 style={{color: '#f0f2f5'}}>Contacts</h3>
             {
                 Object.keys(contacts).map(key =>
                     <Contact key={key} title={key}
@@ -37,5 +37,5 @@ interface IPropsContact {
 
 const Contact: React.FC<IPropsContact> = props => {
     const {title, value} = props
-    return <div><b>{title}</b>{value}</div>
+    return <div><h4 style={{color: '#f0f2f5'}}>{title}</h4>{value}</div>
 }

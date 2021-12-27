@@ -5,6 +5,7 @@ import {ThunkType} from "../store";
 const SET_PROFILE = 'SET_PROFILE'
 const SET_STATUS = 'SET_STATUS'
 const SET_PROFILE_INIT_STATUS = 'SET_PROFILE_INIT_STATUS'
+
 export enum ProfileStatus {
     IDLE,
     LOADING,
@@ -16,7 +17,12 @@ export enum ProfileStatus {
 const iState: IProfileReducerState = {
     profile: null,
     status: null,
-    profileStatus: ProfileStatus.IDLE
+    profileStatus: ProfileStatus.IDLE,
+    posts: [
+        {id: 1, text: "Hello React! It,s my first post!", likes: 20, comment: 5},
+        {id: 2, text: "Second post! I`am find.", likes: 5, comment: 2},
+        {id: 3, text: "How are your friends?", likes: 15, comment: 2},
+    ],
 }
 
 //reducer
@@ -52,7 +58,7 @@ export const profileInitialization = (userId: number): ThunkType => async dispat
     dispatch(setProfileInitStatus(ProfileStatus.LOADING))
     const result = await serverAPI.getProfile(userId)
 
-    if(result) {
+    if (result) {
         dispatch(setProfile(result))
         await dispatch(getStatus(result.userId))
         dispatch(setProfileInitStatus(ProfileStatus.SUCCESS))
@@ -62,10 +68,9 @@ export const profileInitialization = (userId: number): ThunkType => async dispat
 }
 
 export const getStatus = (userId: number): ThunkType => async dispatch => {
-    dispatch(setProfileInitStatus(ProfileStatus.LOADING))
     const userStatus = await serverAPI.getProfileStatus(userId)
 
-    if(userStatus) {
+    if (userStatus) {
         dispatch(setStatus(userStatus))
     } else {
         dispatch(setProfileInitStatus(ProfileStatus.FAILED))
@@ -73,10 +78,9 @@ export const getStatus = (userId: number): ThunkType => async dispatch => {
 }
 
 export const changeStatus = (status: string): ThunkType => async dispatch => {
-
     const result = await serverAPI.setProfileStatus(status)
 
-    if(result.resultCode === 0) {
+    if (result.resultCode === 0) {
         dispatch(setStatus(status))
     } else {
         dispatch(setProfileInitStatus(ProfileStatus.FAILED))
@@ -89,6 +93,14 @@ interface IProfileReducerState {
     profile: IProfile | null
     status: string | null
     profileStatus: ProfileStatus
+    posts: IPost[]
+}
+
+interface IPost {
+    id: number
+    text: string
+    likes: number
+    comment: number
 }
 
 export type TProfileReducerActions = TSetProfile | TSetStatus | TSetProfileInitStatus

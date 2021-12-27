@@ -9,4 +9,5 @@
 body {
   font-family: sans-serif;
   font-size: calc(16px + .5vh);
+  background-color:  #f0f2f5;
 }

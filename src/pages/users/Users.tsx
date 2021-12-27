@@ -5,35 +5,61 @@ import {useDispatch, useSelector} from "react-redux";
 import {getUsers, subscribeToUser, unsubscribeFromUser} from "../../state/reducers/users-reducer";
 import {TAppState} from "../../state/store";
 import {IUser} from "../../api/api";
-import {Search} from "../../components/search/Search";
+import {SearchArea} from "../../components/search/Search";
+import {Button, Card, Pagination, Radio, RadioChangeEvent, Skeleton} from "antd";
+import {EditOutlined, UserOutlined} from '@ant-design/icons/lib/icons';
+import Meta from 'antd/lib/card/Meta';
+import Avatar from 'antd/lib/avatar/avatar';
+import {Paginator} from "../../components/paginator/paginator";
+import {Preloader} from "../../components/preloader/Preloader";
 
 export const Users = () => {
 
     const dispatch = useDispatch()
     const {page, count, term, friend, subscriptionProcess} = useSelector((state: TAppState) => state.users)
+    const totalCount = useSelector((state: TAppState) => state.users.totalCount)
     const users = useSelector((state: TAppState) => state.users.users)
 
     useEffect(() => {
         dispatch(getUsers(page, count, term, friend))
     }, [dispatch])
 
-    const setSearchValue = useCallback((value: string) => {
-        dispatch(getUsers(page, count, value, friend))
+    const setCountValue = useCallback((count: number) => {
+        dispatch(getUsers(page, count, term, friend))
     }, [dispatch])
 
-    const setUserLsitFilter = useCallback((filter: boolean | null) => {
+    const setSearchValue = useCallback((term: string) => {
+        dispatch(getUsers(page, count, term, friend))
+    }, [dispatch])
+
+    const setUserListFilter = useCallback((filter: boolean | null) => {
         dispatch(getUsers(page, count, term, filter))
     }, [dispatch])
 
+    const filterUserListHandler = (e: RadioChangeEvent) => {
+        if (e.target.value === 'friends') {
+            setUserListFilter(true)
+        } else if (e.target.value === 'users') {
+            setUserListFilter(false)
+        } else {
+            setUserListFilter(null)
+        }
+    }
     return (
         <WithAuth>
-            <Search submit={setSearchValue}/>
-            <div>
-                <button onClick={() => setUserLsitFilter(null)}>All</button>
-                <button onClick={() => setUserLsitFilter(true)}>Friends</button>
-                <button onClick={() => setUserLsitFilter(false)}>Users</button>
+            <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '10px'}}>
+                <SearchArea submit={setSearchValue}/>
+                <Radio.Group value={'default'} style={{padding: '10px 0'}}
+                             onChange={filterUserListHandler}>
+                    <Radio.Button value="all">All</Radio.Button>
+                    <Radio.Button value="friends">Friends</Radio.Button>
+                    <Radio.Button value="users">Users</Radio.Button>
+                </Radio.Group>
+                {users.map(u => <User key={u.id} {...u} subscriptionProcess={subscriptionProcess}/>)}
+                {totalCount
+                    ? <Paginator totalUsers={totalCount} portionSize={page} changeCurrentPage={setCountValue}/>
+                    : <Preloader/>}
             </div>
-            {users.map(u => <User key={u.id} {...u} subscriptionProcess={subscriptionProcess}/>)}
         </WithAuth>
     );
 };
@@ -53,7 +79,7 @@ const User: React.FC<IUserProps> = props => {
         subscriptionProcess
     } = props
     const dispatch = useDispatch()
-    const isDisebled = subscriptionProcess.some(i => i === id)
+    const isDisabled = subscriptionProcess.some(i => i === id)
 
     const subscribe = () => {
         dispatch(subscribeToUser(id))
@@ -63,15 +89,29 @@ const User: React.FC<IUserProps> = props => {
         dispatch(unsubscribeFromUser(id))
     }
 
-    return <div>
-
-        <Link to={`/profile/${id}`}>
-            <img src={photos.small} alt="..."/>{name}</Link>
-        <span>{status || '...'}</span>
-        {
-            followed
-                ? <button onClick={unsubscribe} disabled={isDisebled}>Unsubscribe</button>
-                : <button onClick={subscribe} disabled={isDisebled}>Subscribe</button>
-        }
-    </div>
+    return (
+        <div style={{width: '100%'}}>
+            <Card style={{margin: '10px 0'}}
+                actions={[
+                    <Link to={`/profile/${id}`}>Profile<UserOutlined/></Link>,
+                    <EditOutlined key="edit"/>,
+                    <>
+                        {
+                            followed
+                                ? <Button onClick={unsubscribe} disabled={isDisabled}>Unsubscribe</Button>
+                                : <Button onClick={subscribe} disabled={isDisabled}>Subscribe</Button>
+                        }
+                    </>
+                ]}
+            >
+                <Skeleton loading={!name} avatar active>
+                    <Meta
+                        avatar={<Avatar src={photos.small || "https://joeschmoe.io/api/v1/random"}/>}
+                        title={name}
+                        description={status || '...'}
+                    />
+                </Skeleton>
+            </Card>
+        </div>
+    )
 }
