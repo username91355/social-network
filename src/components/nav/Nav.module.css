@@ -1,0 +1,12 @@
+.nav__wrapper {
+    grid-area: n;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+}
+
+.nav__menu {
+    width: 256px
+}
+

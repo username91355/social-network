@@ -1,0 +1,19 @@
+.profile__bio {
+    display: flex;
+    align-items: center;
+}
+
+.profile__bio h2 {
+    color: #f0f2f5;
+}
+
+.profile__bio_img {
+    width: 150px;
+    border-radius: 50%;
+    background-color: #f0f2f5;
+}
+
+.profile__bio_info {
+    padding: 10px;
+    width: 100%;
+}

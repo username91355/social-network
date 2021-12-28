@@ -1,12 +1,13 @@
 import {IMe, serverAPI} from "../../api/api";
 import {ThunkType} from "../store";
-import {getStatus, profileInitialization, TSetProfile} from "./profile-reducer";
+import {profileInitialization} from "./profile-reducer";
 
 //constants
-const SET_USER_DATA = 'SET_USER_DATA'
-const REMOVE_USER_DATA = 'REMOVE_USER_DATA'
+const SET_USER_DATA = 'socialNetwork/appReducer/SET_USER_DATA'
+const REMOVE_USER_DATA = 'socialNetwork/appReducer/REMOVE_USER_DATA'
 const SET_APP_ERROR = 'socialNetwork/appReducer/SET_APP_ERROR'
-const SET_APP_STATUS = 'SET_APP_STATUS'
+const SET_APP_STATUS = 'socialNetwork/appReducer/SET_APP_STATUS'
+
 export enum AppStatus {
     IDLE,
     LOADING,
@@ -15,17 +16,17 @@ export enum AppStatus {
 }
 
 //initialization state
-const iState: IAppReducerState = {
-    appStatus: AppStatus.IDLE,
-    isAuth: false,
-    id: null,
-    email: null,
-    login: null,
-    error: null,
+const iState = {
+    appStatus: AppStatus.IDLE as AppStatus,
+    isAuth: false as boolean,
+    id: null as Nullable<number>,
+    email: null as Nullable<string>,
+    login: null as Nullable<string>,
+    error: null as Nullable<string>,
 }
 
 //reducer
-export const appReducer = (state: IAppReducerState = iState, action: TAppReducerActions) => {
+export const appReducer = (state: TAppReducerState = iState, action: TAppReducerActions) => {
     switch (action.type) {
         case SET_APP_STATUS:
             return {
@@ -68,7 +69,7 @@ export const appInitialization = (): ThunkType => async dispatch => {
     dispatch(setAppStatus(AppStatus.LOADING))
     const result = await serverAPI.me()
 
-    if(result.resultCode === 0) {
+    if (result.resultCode === 0) {
         await dispatch(profileInitialization(result.data.id))
         dispatch(setUserData(result.data))
         dispatch(setAppStatus(AppStatus.SUCCESS))
@@ -77,11 +78,11 @@ export const appInitialization = (): ThunkType => async dispatch => {
         dispatch(setAppStatus(AppStatus.FAILED))
     }
 }
-export const login = (email: string,password: string,rememberMe: boolean,captcha: boolean): ThunkType => async dispatch => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: boolean): ThunkType => async dispatch => {
     dispatch(setAppStatus(AppStatus.LOADING))
-    const result = await serverAPI.login(email,password,rememberMe,captcha)
+    const result = await serverAPI.login(email, password, rememberMe, captcha)
 
-    if(result.resultCode === 0) {
+    if (result.resultCode === 0) {
         dispatch(appInitialization())
     } else {
         dispatch(setAppError(result.messages[0]))
@@ -91,7 +92,7 @@ export const login = (email: string,password: string,rememberMe: boolean,captcha
 export const logout = (): ThunkType => async dispatch => {
     const result = await serverAPI.logout()
 
-    if(result.resultCode === 0) {
+    if (result.resultCode === 0) {
         dispatch(removeUserData())
         dispatch(setAppStatus(AppStatus.SUCCESS))
     } else {
@@ -101,14 +102,8 @@ export const logout = (): ThunkType => async dispatch => {
 }
 
 //types
-interface IAppReducerState {
-    appStatus: AppStatus
-    isAuth: boolean,
-    id: number | null,
-    email: string | null,
-    login: string | null,
-    error: string | null,
-}
+export type Nullable<T> = T | null
+type TAppReducerState = typeof iState
 
 export type TAppReducerActions = TSetUserData | TRemoveUserData | TSetAppError | TSetAppStatus
 type TSetUserData = ReturnType<typeof setUserData>

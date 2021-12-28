@@ -64,12 +64,6 @@ export const serverAPI = {
             .then(res => res.data)
     },
 
-    setProfileData(data: IProfile): Promise<IResponse> {
-        return instance
-            .put<IResponse>('/profile', {...data})
-            .then(res => res.data)
-    },
-
     getProfileStatus(userId: number): Promise<string> {
         return instance
             .get<string>(`/profile/status/${userId}`)
@@ -79,6 +73,12 @@ export const serverAPI = {
     setProfileStatus(status: string): Promise<IResponse> {
         return instance
             .put<IResponse>('/profile/status', {status})
+            .then(res => res.data)
+    },
+
+    setProfileData(data: IProfile): Promise<IResponse> {
+        return instance
+            .put<IResponse>('/profile', {...data})
             .then(res => res.data)
     },
 

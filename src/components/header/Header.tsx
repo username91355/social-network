@@ -1,23 +1,25 @@
 import React, {useState} from 'react';
 import styles from './Header.module.css'
+import logo from './../../assets/img/logo.png'
+import {Button} from "antd";
+import {LogoutOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import {useDispatch, useSelector} from "react-redux";
 import {TAppState} from "../../state/store";
-import {Link} from "react-router-dom";
 import {logout} from '../../state/reducers/app-reducer';
-import {Button, Menu} from "antd";
-import {LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
-import logo from './../../assets/img/logo.png'
-const Header = () => {
+import {Link} from "react-router-dom";
 
-    const dispatch = useDispatch()
-    const isAuth = useSelector((state: TAppState) => state.app.isAuth)
-    const login = useSelector((state: TAppState) => state.app.login)
+export const Header = () => {
+
+    const
+        dispatch = useDispatch(),
+        isAuth = useSelector((state: TAppState) => state.app.isAuth),
+        login = useSelector((state: TAppState) => state.app.login)
+
+    const [collapsed, setCollapsed] = useState(true)
 
     const logoutClick = () => {
         dispatch(logout())
     }
-
-    const [collapsed, setCollapsed] = useState(true)
 
     return <header className={styles.header__wrapper}>
         <div>
@@ -42,5 +44,3 @@ const Header = () => {
         </div>
     </header>
 };
-
-export default Header;

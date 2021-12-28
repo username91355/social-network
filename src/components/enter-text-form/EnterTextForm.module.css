@@ -1,0 +1,15 @@
+.textForm__wrapper {
+    margin: 10px;
+}
+
+.textForm__title {
+    color: white;
+}
+
+.textForm__textArea {
+    resize: none;
+}
+
+.textForm__button {
+    float: right;
+}

@@ -1,7 +1,7 @@
 import React from "react";
+import {TAppState} from "../state/store";
 import {useSelector} from "react-redux";
 import {Navigate, useLocation} from "react-router-dom";
-import {TAppState} from "./state/store";
 
 interface IWithAuth {
     children: React.ReactNode

@@ -1,0 +1,43 @@
+.messages__wrapper {
+    padding: 10px;
+    height: 100%;
+}
+
+.messages__dialogs {
+    display: flex;
+    height: 100%;
+}
+
+.messages__dialogs_friends {
+    display: flex;
+    flex: 0 1 20%;
+    flex-direction: column;
+}
+
+.messages__dialogs_friends_link {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.messages__dialogs_friends_activeLink {
+    color: #f0f2f5;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.messages__dialogs_messages {
+    flex: 0 1 80%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.messages__dialogs_messages_window {
+    display: flex;
+    flex-direction: column;
+    flex: 0 1 80%;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #f0f2f5;
+}

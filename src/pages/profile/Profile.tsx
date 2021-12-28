@@ -1,40 +1,45 @@
 import React, {useEffect} from 'react';
-import {WithAuth} from "../../WithAuth";
+import styles from './Profile.module.css'
+import {WithAuth} from "../../auxiliary-components/WithAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {TAppState} from "../../state/store";
-import {changeStatus, profileInitialization, ProfileStatus} from "../../state/reducers/profile-reducer";
 import {useNavigate, useParams} from "react-router-dom";
 import {Preloader} from "../../components/preloader/Preloader";
-import {EditableSpan} from "../../components/editeble-span/EditableSpan";
 import {ContactList} from './contact-list/ContactList';
-import {Button, Form} from "antd";
-import TextArea from "antd/es/input/TextArea";
 import {Post} from './post/Post';
+import {Bio} from "./bio/Bio";
+import {EnterTextForm} from "../../components/enter-text-form/EnterTextForm";
+import {
+    addPost,
+    changeNewPostText,
+    changeStatus,
+    profileInitialization,
+    ProfileStatus
+} from "../../state/reducers/profile-reducer";
 
-export const Profile = () => {
+export const Profile: React.FC = () => {
 
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const params = useParams()
-    const id = useSelector((state: TAppState) => state.app.id)
-    const profile = useSelector((state: TAppState) => state.profile.profile)
-    const profileStatus = useSelector((state: TAppState) => state.profile.status)
-    const profileInitStatus = useSelector((state: TAppState) => state.profile.profileStatus)
-    const posts = useSelector((state: TAppState) => state.profile.posts)
-
+    const
+        dispatch = useDispatch(),
+        navigate = useNavigate(),
+        params = useParams(),
+        id = useSelector((state: TAppState) => state.app.id),
+        profile = useSelector((state: TAppState) => state.profile.profile),
+        profileStatus = useSelector((state: TAppState) => state.profile.status),
+        profileInitStatus = useSelector((state: TAppState) => state.profile.profileStatus),
+        posts = useSelector((state: TAppState) => state.profile.posts),
+        newPostText = useSelector((state: TAppState) => state.profile.newPostText)
 
     let userId: number | null = Number(params.userId)
+
     if (!userId) {
         userId = id
-        if (!userId) {
-            navigate('/login')
-        }
     }
 
     useEffect(() => {
-
-
-        if (userId) {
+        if (!userId) {
+            navigate('/login')
+        } else if (userId) {
             dispatch(profileInitialization(userId))
         }
     }, [dispatch, userId])
@@ -46,39 +51,38 @@ export const Profile = () => {
             return
         }
     }
-    if (!profile) return <Preloader/>
+
+    const changeNewPostArea = (value: string) => {
+        dispatch(changeNewPostText(value))
+    }
+
+    const addNewPost = () => {
+        dispatch(addPost())
+    }
+
     return (
         <WithAuth>
-            <div style={{color: '#f0f2f5'}}>{(profileInitStatus === ProfileStatus.IDLE || profileInitStatus === ProfileStatus.LOADING)
+            {(profileInitStatus === ProfileStatus.IDLE || profileInitStatus === ProfileStatus.LOADING || !profile)
                 ? <Preloader/>
-                : <div >
-                    <div style={{display: 'flex'}}>
-                        <img style={{width: '150px', borderRadius: '50%'}}
-                             src={profile.photos.large || "https://joeschmoe.io/api/v1/random"}/>
-                        <div>
-                            <div><h2 style={{color: '#f0f2f5'}}>{profile?.fullName}</h2></div>
-                            <EditableSpan profileStatus={profileStatus} changeUserStatus={changeUserStatus}/>
-                            <div>{profile?.lookingForAJob}</div>
-                            <div>{profile?.lookingForAJobDescription}</div>
-                            <div>{profile?.aboutMe}</div>
-                        </div>
+                : <div className={styles.profile__wrapper}>
+                    <div>
+                        <Bio profile={profile}
+                             profileStatus={profileStatus}
+                             changeUserStatus={changeUserStatus}/>
+                        <ContactList contacts={profile?.contacts}/>
+                        <hr/>
+                        <EnterTextForm title={'Add post'}
+                                       value={newPostText}
+                                       label={'New post'}
+                                       onChange={changeNewPostArea}
+                                       send={addNewPost}/>
+                        {profile.userId === id && posts.map(i => {
+                            return <Post key={i.id} id={i.id} text={i.text} postLikes={i.likes}
+                                         postComment={i.comment}/>
+                        })}
                     </div>
-                    <ContactList contacts={profile?.contacts}/>
-                        <Form>
-                            <Form.Item>
-                                <TextArea rows={4} onChange={()=>{}} value={'value'}/>
-                            </Form.Item>
-                            <Form.Item>
-                                <Button htmlType="submit" onClick={()=>{}} type="primary">
-                                    Add Post
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                    {profile.userId === id && posts.map(i => {
-                        return <Post key={i.id} text={i.text} postLikes={i.likes} postComment={i.comment}/>
-                    })}
                 </div>
-            }</div>
+            }
         </WithAuth>
     );
 };

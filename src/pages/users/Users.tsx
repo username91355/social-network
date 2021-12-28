@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect} from 'react';
 import {Link} from 'react-router-dom';
-import {WithAuth} from "../../WithAuth";
+import {WithAuth} from "../../auxiliary-components/WithAuth";
 import {useDispatch, useSelector} from "react-redux";
 import {getUsers, subscribeToUser, unsubscribeFromUser} from "../../state/reducers/users-reducer";
 import {TAppState} from "../../state/store";
@@ -10,8 +10,8 @@ import {Button, Card, Pagination, Radio, RadioChangeEvent, Skeleton} from "antd"
 import {EditOutlined, UserOutlined} from '@ant-design/icons/lib/icons';
 import Meta from 'antd/lib/card/Meta';
 import Avatar from 'antd/lib/avatar/avatar';
-import {Paginator} from "../../components/paginator/paginator";
 import {Preloader} from "../../components/preloader/Preloader";
+import {Paginator} from "../../components/paginator/Paginator";
 
 export const Users = () => {
 
@@ -55,7 +55,7 @@ export const Users = () => {
                     <Radio.Button value="friends">Friends</Radio.Button>
                     <Radio.Button value="users">Users</Radio.Button>
                 </Radio.Group>
-                {users.map(u => <User key={u.id} {...u} subscriptionProcess={subscriptionProcess}/>)}
+                {users.map(u => <User key={u.id} {...u} isLoaded={users !== []} subscriptionProcess={subscriptionProcess}/>)}
                 {totalCount
                     ? <Paginator totalUsers={totalCount} portionSize={page} changeCurrentPage={setCountValue}/>
                     : <Preloader/>}
@@ -66,6 +66,7 @@ export const Users = () => {
 
 interface IUserProps extends IUser {
     subscriptionProcess: number[]
+    isLoaded: boolean
 }
 
 const User: React.FC<IUserProps> = props => {
@@ -76,8 +77,10 @@ const User: React.FC<IUserProps> = props => {
         status,
         photos,
         followed,
-        subscriptionProcess
+        subscriptionProcess,
+        isLoaded
     } = props
+
     const dispatch = useDispatch()
     const isDisabled = subscriptionProcess.some(i => i === id)
 
@@ -104,7 +107,7 @@ const User: React.FC<IUserProps> = props => {
                     </>
                 ]}
             >
-                <Skeleton loading={!name} avatar active>
+                <Skeleton loading={!isLoaded} avatar active>
                     <Meta
                         avatar={<Avatar src={photos.small || "https://joeschmoe.io/api/v1/random"}/>}
                         title={name}

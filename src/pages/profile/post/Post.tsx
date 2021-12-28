@@ -1,9 +1,12 @@
 import React, {useState} from "react";
 import {Comment, Tooltip} from "antd";
-import {CommentOutlined, LikeFilled, LikeOutlined} from "@ant-design/icons";
+import {CommentOutlined, DeleteOutlined, LikeFilled, LikeOutlined} from "@ant-design/icons";
 import Avatar from "antd/lib/avatar/avatar";
+import {useDispatch} from "react-redux";
+import {removePost} from "../../../state/reducers/profile-reducer";
 
 interface IProps {
+    id: number
     text: string
     postLikes: number
     postComment: number
@@ -11,13 +14,14 @@ interface IProps {
 
 export const Post: React.FC<IProps> = props => {
 
-    const {text, postLikes, postComment} = props
+    const dispatch = useDispatch()
+    const {id, text, postLikes, postComment} = props
     const [likes, setLikes] = useState(postLikes);
     const [likeThisPost, setLikeThisPost] = useState(false)
     const [action, setAction] = useState<null | string>(null);
 
     const like = () => {
-        if(!likeThisPost) {
+        if (!likeThisPost) {
             setLikes(likes + 1);
             setAction('liked');
             setLikeThisPost(true)
@@ -28,6 +32,10 @@ export const Post: React.FC<IProps> = props => {
         }
 
     };
+
+    const removeThisPost = () => {
+        dispatch(removePost(id))
+    }
 
     const actions = [
         <Tooltip key="comment-basic-like" title="Like">
@@ -42,7 +50,11 @@ export const Post: React.FC<IProps> = props => {
           <span className="comment-action">{postComment}</span>
       </span>
         </Tooltip>,
-        <span key="comment-basic-reply-to">Reply to</span>,
+        <Tooltip key="comment-basic-dislike" title="Delete">
+      <span onClick={removeThisPost}>
+        <DeleteOutlined/>
+      </span>
+        </Tooltip>
     ];
 
     return (

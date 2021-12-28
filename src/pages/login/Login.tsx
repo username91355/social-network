@@ -4,7 +4,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {login} from "../../state/reducers/app-reducer";
 
-const Login = () => {
+export const Login = () => {
 
     const {register, handleSubmit, formState: { errors }, reset} = useForm()
     const dispatch = useDispatch()
@@ -34,5 +34,3 @@ const Login = () => {
         </div>
     );
 };
-
-export default Login;

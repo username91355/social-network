@@ -1,12 +1,13 @@
 import {IUser, serverAPI} from "../../api/api";
 import {ThunkType} from "../store";
+import {Nullable} from "./app-reducer";
 
 //constants
-const SET_USERS = 'SET_USERS'
-const SET_SUBSCRIPTION_STATUS = 'SET_SUBSCRIPTION_STATUS'
-const REMOVE_SUBSCRIPTION_STATUS = 'REMOVE_SUBSCRIPTION_STATUS'
-const ADD_TO_FRIENDS = 'ADD_TO_FRIENDS'
-const REMOVE_FROM_FRIENDS = 'REMOVE_FROM_FRIENDS'
+const SET_USERS = 'socialNetwork/usersReducer/SET_USERS'
+const SET_SUBSCRIPTION_STATUS = 'socialNetwork/usersReducer/SET_SUBSCRIPTION_STATUS'
+const REMOVE_SUBSCRIPTION_STATUS = 'socialNetwork/usersReducer/REMOVE_SUBSCRIPTION_STATUS'
+export const ADD_TO_FRIENDS = 'socialNetwork/usersReducer/ADD_TO_FRIENDS'
+const REMOVE_FROM_FRIENDS = 'socialNetwork/usersReducer/REMOVE_FROM_FRIENDS'
 
 //initialization state
 const iState = {
@@ -17,26 +18,11 @@ const iState = {
     totalCount: null,
     users: [],
     subscriptionProcess: [],
-    // dialogs: [
-    //     {id: 1, name: 'Alexandr'},
-    //     {id: 2, name: 'Anvar'},
-    //     {id: 3, name: 'Anna'},
-    //     {id: 4, name: 'Igor'},
-    //     {id: 5, name: 'Lena'},
-    // ],
-    //
-    // messages: [
-    //     {id: 1, message: 'Hi!'},
-    //     {id: 2, message: 'Hello!'},
-    //     {id: 3, message: 'How are you?'},
-    //     {id: 4, message: 'I`m fine. How ary you?'},
-    //     {id: 5, message: 'I am OK.'},
-    //     {id: 6, message: 'OK. Maybe go to the walk?'},
-    // ]
+    usersError: null
 }
 
 //reducer
-export const usersReducer = (state: IUsersState = iState, action: TUsersActions) => {
+export const usersReducer = (state: IUsersState = iState, action: TUsersReducerActions) => {
     switch (action.type) {
         case SET_USERS:
             return {
@@ -107,23 +93,24 @@ export const unsubscribeFromUser = (userId: number): ThunkType => async dispatch
 
 //types
 interface IUsersState {
-    count: number,
-    page: number,
-    term: string,
-    friend: boolean | null,
-    totalCount: number | null,
-    users: IUser[],
-    subscriptionProcess: number[],
+    count: number
+    page: number
+    term: string
+    friend: Nullable<boolean>
+    totalCount: Nullable<number>
+    users: IUser[]
+    subscriptionProcess: number[]
+    usersError: Nullable<string>
 }
 
-export type TUsersActions =
+export type TUsersReducerActions =
     | TSetUsers
-    | TSetSubscriptonStatus
+    | TSetSubscribtionStatus
     | TAddFriend
-    | TRemoveSubscriptonStatus
+    | TRemoveSubscribtionStatus
     | TRemoveFriend
 type TSetUsers = ReturnType<typeof setUsers>
-type TSetSubscriptonStatus = ReturnType<typeof setSubscriptonStatus>
-type TRemoveSubscriptonStatus = ReturnType<typeof removeSubscriptonStatus>
-type TAddFriend = ReturnType<typeof addFriend>
+type TSetSubscribtionStatus = ReturnType<typeof setSubscriptonStatus>
+type TRemoveSubscribtionStatus = ReturnType<typeof removeSubscriptonStatus>
+export type TAddFriend = ReturnType<typeof addFriend>
 type TRemoveFriend = ReturnType<typeof removeFriend>

@@ -37,5 +37,5 @@ interface IPropsContact {
 
 const Contact: React.FC<IPropsContact> = props => {
     const {title, value} = props
-    return <div><h4 style={{color: '#f0f2f5'}}>{title}</h4>{value}</div>
+    return <div><b>{title}:</b> {value ? <a href={value}>{value}</a> : ' ...'}</div>
 }

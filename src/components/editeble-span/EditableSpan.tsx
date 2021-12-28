@@ -1,3 +1,4 @@
+import { EditOutlined } from '@ant-design/icons';
 import React, {ChangeEvent, useState} from 'react';
 
 interface IProps {
@@ -33,7 +34,10 @@ export const EditableSpan: React.FC<IProps> = props => {
             ? <input type={'text'}
                      value={inputValue}
                      onChange={inputChange}
-                     onBlur={inputOnBlur}/>
-            : <span onDoubleClick={spanDBLClick}>{profileStatus || 'set status'}</span>}
+                     onBlur={inputOnBlur}
+                     style={{color: 'black',width: '250px'}}/>
+            : <span onDoubleClick={spanDBLClick}>{profileStatus || 'set status'}</span>
+        }
+        <span onClick={()=>setEditMode(!editMode)}><EditOutlined /></span>
     </>
 };
