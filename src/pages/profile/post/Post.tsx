@@ -1,9 +1,9 @@
-import React, {useState} from "react";
-import {Comment, Tooltip} from "antd";
-import {CommentOutlined, DeleteOutlined, LikeFilled, LikeOutlined} from "@ant-design/icons";
-import Avatar from "antd/lib/avatar/avatar";
-import {useDispatch} from "react-redux";
-import {removePost} from "../../../state/reducers/profile-reducer";
+import React, {useCallback, useState} from 'react'
+import {Comment, Tooltip} from 'antd'
+import {CommentOutlined, DeleteOutlined, LikeFilled, LikeOutlined} from '@ant-design/icons'
+import Avatar from 'antd/lib/avatar/avatar'
+import {useDispatch} from 'react-redux'
+import {removePost} from '../../../state/reducers/profile-reducer'
 
 interface IProps {
     id: number
@@ -12,7 +12,7 @@ interface IProps {
     postComment: number
 }
 
-export const Post: React.FC<IProps> = props => {
+export const Post: React.FC<IProps> = React.memo(props => {
 
     const dispatch = useDispatch()
     const {id, text, postLikes, postComment} = props
@@ -20,7 +20,7 @@ export const Post: React.FC<IProps> = props => {
     const [likeThisPost, setLikeThisPost] = useState(false)
     const [action, setAction] = useState<null | string>(null);
 
-    const like = () => {
+    const like = useCallback(() => {
         if (!likeThisPost) {
             setLikes(likes + 1);
             setAction('liked');
@@ -31,11 +31,11 @@ export const Post: React.FC<IProps> = props => {
             setLikeThisPost(false)
         }
 
-    };
+    },[likeThisPost])
 
-    const removeThisPost = () => {
+    const removeThisPost = useCallback(() => {
         dispatch(removePost(id))
-    }
+    },[id])
 
     const actions = [
         <Tooltip key="comment-basic-like" title="Like">
@@ -55,7 +55,7 @@ export const Post: React.FC<IProps> = props => {
         <DeleteOutlined/>
       </span>
         </Tooltip>
-    ];
+    ]
 
     return (
         <Comment style={{margin: '10px 10px', backgroundColor: 'white', color: 'black'}}
@@ -64,5 +64,5 @@ export const Post: React.FC<IProps> = props => {
                  avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="avatar"/>}
                  content={<p>{text}</p>}
         />
-    );
-};
+    )
+})

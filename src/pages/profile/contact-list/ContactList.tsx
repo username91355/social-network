@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 
 interface IProps {
     contacts: TContacts
@@ -8,7 +8,7 @@ type TContacts = {
     [key: string]: string | null
 }
 
-export const ContactList: React.FC<IProps> = props => {
+export const ContactList: React.FC<IProps> = React.memo(props => {
 
     const {
         contacts
@@ -28,14 +28,14 @@ export const ContactList: React.FC<IProps> = props => {
             }
         </div>
     )
-}
+})
 
 interface IPropsContact {
     title: string
     value: string | null
 }
 
-const Contact: React.FC<IPropsContact> = props => {
+const Contact: React.FC<IPropsContact> = React.memo(props => {
     const {title, value} = props
     return <div><b>{title}:</b> {value ? <a href={value}>{value}</a> : ' ...'}</div>
-}
+})

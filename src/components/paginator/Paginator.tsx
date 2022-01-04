@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Pagination} from "antd";
+import React, {useState} from 'react'
+import {Pagination} from 'antd'
 
 interface IProps {
     portionSize: number
@@ -7,7 +7,7 @@ interface IProps {
     changeCurrentPage: (page:number) => void
 }
 
-export const Paginator: React.FC<IProps> = props => {
+export const Paginator: React.FC<IProps> = React.memo(props => {
 
     const {
         portionSize,
@@ -30,5 +30,5 @@ export const Paginator: React.FC<IProps> = props => {
                         onChange={onChange}
                         showSizeChanger={false} />
         </div>
-    );
-};
+    )
+})

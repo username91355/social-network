@@ -1,23 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react'
 import styles from './Profile.module.css'
-import {WithAuth} from "../../auxiliary-components/WithAuth";
-import {useDispatch, useSelector} from "react-redux";
-import {TAppState} from "../../state/store";
-import {useNavigate, useParams} from "react-router-dom";
-import {Preloader} from "../../components/preloader/Preloader";
-import {ContactList} from './contact-list/ContactList';
-import {Post} from './post/Post';
-import {Bio} from "./bio/Bio";
-import {EnterTextForm} from "../../components/enter-text-form/EnterTextForm";
+import {WithAuth} from '../../auxiliary-components/WithAuth'
+import {useDispatch, useSelector} from "react-redux"
+import {TAppState} from '../../state/store'
+import {useNavigate, useParams} from 'react-router-dom'
+import {Preloader} from '../../components/preloader/Preloader'
+import {ContactList} from './contact-list/ContactList'
+import {Post} from './post/Post'
+import {Bio} from './bio/Bio'
+import {EnterTextForm} from '../../components/enter-text-form/EnterTextForm'
 import {
     addPost,
     changeNewPostText,
     changeStatus,
     profileInitialization,
     ProfileStatus
-} from "../../state/reducers/profile-reducer";
+} from '../../state/reducers/profile-reducer'
 
-export const Profile: React.FC = () => {
+export const Profile: React.FC = React.memo(() => {
 
     const
         dispatch = useDispatch(),
@@ -44,21 +44,21 @@ export const Profile: React.FC = () => {
         }
     }, [dispatch, userId])
 
-    const changeUserStatus = (value: string) => {
+    const changeUserStatus = useCallback((value: string) => {
         if (profileStatus !== value) {
             dispatch(changeStatus(value))
         } else {
             return
         }
-    }
+    },[])
 
-    const changeNewPostArea = (value: string) => {
+    const changeNewPostArea = useCallback((value: string) => {
         dispatch(changeNewPostText(value))
-    }
+    },[])
 
-    const addNewPost = () => {
+    const addNewPost = useCallback(() => {
         dispatch(addPost())
-    }
+    },[])
 
     return (
         <WithAuth>
@@ -84,6 +84,5 @@ export const Profile: React.FC = () => {
                 </div>
             }
         </WithAuth>
-    );
-};
-
+    )
+})

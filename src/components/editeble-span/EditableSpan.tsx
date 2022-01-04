@@ -1,12 +1,12 @@
-import { EditOutlined } from '@ant-design/icons';
-import React, {ChangeEvent, useState} from 'react';
+import { EditOutlined } from '@ant-design/icons'
+import React, {ChangeEvent, useState} from 'react'
 
 interface IProps {
     profileStatus: string | null
     changeUserStatus: (status: string) => void
 }
 
-export const EditableSpan: React.FC<IProps> = props => {
+export const EditableSpan: React.FC<IProps> = React.memo(props => {
 
     const {
         profileStatus,
@@ -40,4 +40,4 @@ export const EditableSpan: React.FC<IProps> = props => {
         }
         <span onClick={()=>setEditMode(!editMode)}><EditOutlined /></span>
     </>
-};
+})

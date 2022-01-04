@@ -1,11 +1,11 @@
-import React from 'react';
-import Search from "antd/es/input/Search";
+import React from 'react'
+import Search from 'antd/es/input/Search'
 
 interface IProps {
     submit: (value: string) => void
 }
 
-export const SearchArea: React.FC<IProps> = props => {
+export const SearchArea: React.FC<IProps> = React.memo(props => {
 
     const {submit} = props
 
@@ -15,5 +15,5 @@ export const SearchArea: React.FC<IProps> = props => {
 
     return (
         <Search placeholder="*Input search user name" onSearch={onSearch} enterButton />
-    );
-};
+    )
+})

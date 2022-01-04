@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
+import React, {useState} from 'react'
 import styles from './Header.module.css'
 import logo from './../../assets/img/logo.png'
-import {Button} from "antd";
-import {LogoutOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
-import {useDispatch, useSelector} from "react-redux";
-import {TAppState} from "../../state/store";
-import {logout} from '../../state/reducers/app-reducer';
-import {Link} from "react-router-dom";
+import {Button} from 'antd'
+import {LogoutOutlined, MenuUnfoldOutlined} from '@ant-design/icons'
+import {useDispatch, useSelector} from 'react-redux'
+import {TAppState} from '../../state/store'
+import {logout} from '../../state/reducers/app-reducer'
+import {Link} from 'react-router-dom'
 
-export const Header = () => {
+export const Header = React.memo(() => {
 
     const
         dispatch = useDispatch(),
@@ -43,4 +43,4 @@ export const Header = () => {
             }
         </div>
     </header>
-};
+})

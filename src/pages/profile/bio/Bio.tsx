@@ -1,7 +1,7 @@
-import React from 'react';
-import styles from "./Bio.module.css";
-import {EditableSpan} from "../../../components/editeble-span/EditableSpan";
-import {IProfile} from "../../../api/api";
+import React from 'react'
+import styles from './Bio.module.css'
+import {EditableSpan} from '../../../components/editeble-span/EditableSpan'
+import {IProfile} from '../../../api/api'
 
 interface IProps {
     profile: IProfile
@@ -9,8 +9,7 @@ interface IProps {
     changeUserStatus: (value: string) => void
 }
 
-
-export const Bio: React.FC<IProps> = props => {
+export const Bio: React.FC<IProps> = React.memo(props => {
 
     const {
         profile,
@@ -21,7 +20,8 @@ export const Bio: React.FC<IProps> = props => {
     return (
         <div className={styles.profile__bio}>
             <img className={styles.profile__bio_img}
-                 src={profile.photos.large || "https://joeschmoe.io/api/v1/random"}/>
+                 src={profile.photos.large || 'https://joeschmoe.io/api/v1/random'}
+                 alt='photo'/>
             <div className={styles.profile__bio_info}>
                 <h2>{profile?.fullName}</h2>
                 <EditableSpan profileStatus={profileStatus} changeUserStatus={changeUserStatus}/>
@@ -40,5 +40,5 @@ export const Bio: React.FC<IProps> = props => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+})

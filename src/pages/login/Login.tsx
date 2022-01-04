@@ -1,10 +1,10 @@
-import React from 'react';
-import {useForm} from "react-hook-form";
-import {useLocation, useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {login} from "../../state/reducers/app-reducer";
+import React from 'react'
+import {useForm} from 'react-hook-form'
+import {useLocation, useNavigate} from 'react-router-dom'
+import {useDispatch} from 'react-redux'
+import {login} from '../../state/reducers/app-reducer'
 
-export const Login = () => {
+export const Login = React.memo(() => {
 
     const {register, handleSubmit, formState: { errors }, reset} = useForm()
     const dispatch = useDispatch()
@@ -29,8 +29,8 @@ export const Login = () => {
                 <input {...register('password', {required: true})} type='password'/>
                 {errors.password && <span>This field password is required</span>}
                 <input {...register('rememberMe')} type='checkbox'/>
-                <input type="submit"/>
+                <input type='submit'/>
             </form>
         </div>
-    );
-};
+    )
+})

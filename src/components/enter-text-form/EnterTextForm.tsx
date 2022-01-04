@@ -1,7 +1,7 @@
-import React, {ChangeEvent} from "react";
+import React, {ChangeEvent} from 'react'
 import styles from './EnterTextForm.module.css'
-import {Button, Form} from "antd";
-import TextArea from "antd/es/input/TextArea";
+import {Button, Form} from 'antd'
+import TextArea from 'antd/es/input/TextArea'
 
 interface IProps {
     value: string
@@ -11,7 +11,7 @@ interface IProps {
     send: () => void
 }
 
-export const EnterTextForm: React.FC<IProps> = props => {
+export const EnterTextForm: React.FC<IProps> = React.memo(props => {
 
     const {value, title, label=null,onChange, send} = props
 
@@ -27,11 +27,11 @@ export const EnterTextForm: React.FC<IProps> = props => {
                     <TextArea className={styles.textForm__textArea} rows={4} onChange={changeTextArea} value={value}/>
                 </Form.Item>
                 <Form.Item>
-                    <Button className={styles.textForm__button} htmlType="submit" onClick={send} type="primary">
+                    <Button className={styles.textForm__button} htmlType='submit' onClick={send} type='primary'>
                         {title}
                     </Button>
                 </Form.Item>
             </Form>
         </div>
     )
-}
+})

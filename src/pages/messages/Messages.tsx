@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react';
+import React, {useCallback, useEffect} from 'react'
 import styles from './Messages.module.css'
-import {WithAuth} from "../../auxiliary-components/WithAuth";
-import {Preloader} from "../../components/preloader/Preloader";
-import {useDispatch, useSelector} from "react-redux";
-import {TAppState} from "../../state/store";
-import {IUser} from "../../api/api";
-import {NavLink, useParams} from "react-router-dom";
-import {EnterTextForm} from '../../components/enter-text-form/EnterTextForm';
-import {DeleteOutlined} from "@ant-design/icons";
+import {WithAuth} from '../../auxiliary-components/WithAuth'
+import {Preloader} from '../../components/preloader/Preloader'
+import {useDispatch, useSelector} from 'react-redux'
+import {TAppState} from '../../state/store'
+import {IUser} from '../../api/api'
+import {NavLink, useParams} from 'react-router-dom'
+import {EnterTextForm} from '../../components/enter-text-form/EnterTextForm'
+import {DeleteOutlined} from '@ant-design/icons'
 import {
     changeNewMessageArea,
     IMessage,
     removeMessage,
     sendMessage,
     setFriends
-} from "../../state/reducers/messages-reducer";
+} from '../../state/reducers/messages-reducer'
 
-export const Messages: React.FC = () => {
+export const Messages: React.FC = React.memo(() => {
 
     const
         dispatch = useDispatch(),
@@ -32,9 +32,9 @@ export const Messages: React.FC = () => {
     }, [])
 
     const interlocutorName = friends.find(i => i.id === userId)
-    const send = () => dispatch(sendMessage(userId))
-    const onChange = (value: string) => dispatch(changeNewMessageArea(value))
-    const remove = (messageId: number) => dispatch(removeMessage(userId, messageId))
+    const send = useCallback(() => dispatch(sendMessage(userId)), [userId])
+    const onChange = useCallback((value: string) => dispatch(changeNewMessageArea(value)), [])
+    const remove = useCallback((messageId: number) => dispatch(removeMessage(userId, messageId)), [userId])
 
     return (
         <WithAuth>
@@ -80,5 +80,5 @@ export const Messages: React.FC = () => {
 
             }
         </WithAuth>
-    );
-};
+    )
+})
