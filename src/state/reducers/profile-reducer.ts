@@ -85,9 +85,9 @@ export const profileReducer = (state: IProfileReducerState = iState, action: TPr
 }
 
 //action creators
-const setProfile = (profile: IProfile) => ({type: SET_PROFILE, profile} as const)
-const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
-const setProfileInitStatus = (profileStatus: ProfileStatus) => ({type: SET_PROFILE_INIT_STATUS, profileStatus} as const)
+export const setProfile = (profile: IProfile) => ({type: SET_PROFILE, profile} as const)
+export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
+export const setProfileInitStatus = (profileStatus: ProfileStatus) => ({type: SET_PROFILE_INIT_STATUS, profileStatus} as const)
 export const addPost = () => ({type: ADD_POST} as const)
 export const removePost = (id: number) => ({type: REMOVE_POST, id} as const)
 export const changeNewPostText = (value: string) => ({type: CHANGE_POST_TEXT, value} as const)

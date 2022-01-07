@@ -7,7 +7,7 @@ const SET_USERS = 'socialNetwork/usersReducer/SET_USERS'
 const SET_SUBSCRIPTION_STATUS = 'socialNetwork/usersReducer/SET_SUBSCRIPTION_STATUS'
 const REMOVE_SUBSCRIPTION_STATUS = 'socialNetwork/usersReducer/REMOVE_SUBSCRIPTION_STATUS'
 export const ADD_TO_FRIENDS = 'socialNetwork/usersReducer/ADD_TO_FRIENDS'
-const REMOVE_FROM_FRIENDS = 'socialNetwork/usersReducer/REMOVE_FROM_FRIENDS'
+export const REMOVE_FROM_FRIENDS = 'socialNetwork/usersReducer/REMOVE_FROM_FRIENDS'
 
 //initialization state
 const iState = {
@@ -56,11 +56,11 @@ export const usersReducer = (state: IUsersState = iState, action: TUsersReducerA
 }
 
 //action creators
-const setUsers = (users: IUser[], totalUsers: number) => ({type: SET_USERS, users, totalUsers} as const)
-const setSubscriptonStatus = (userId: number) => ({type: SET_SUBSCRIPTION_STATUS, userId} as const)
-const removeSubscriptonStatus = (userId: number) => ({type: REMOVE_SUBSCRIPTION_STATUS, userId} as const)
-const addFriend = (userId: number) => ({type: ADD_TO_FRIENDS, userId} as const)
-const removeFriend = (userId: number) => ({type: REMOVE_FROM_FRIENDS, userId} as const)
+export const setUsers = (users: IUser[], totalUsers: number) => ({type: SET_USERS, users, totalUsers} as const)
+export const setSubscriptionStatus = (userId: number) => ({type: SET_SUBSCRIPTION_STATUS, userId} as const)
+export const removeSubscriptionStatus = (userId: number) => ({type: REMOVE_SUBSCRIPTION_STATUS, userId} as const)
+export const addFriend = (userId: number) => ({type: ADD_TO_FRIENDS, userId} as const)
+export const removeFriend = (userId: number) => ({type: REMOVE_FROM_FRIENDS, userId} as const)
 
 //thunks
 export const getUsers = (count: number, page: number, term: string, friend: boolean | null): ThunkType => async dispatch => {
@@ -72,22 +72,22 @@ export const getUsers = (count: number, page: number, term: string, friend: bool
 }
 
 export const subscribeToUser = (userId: number): ThunkType => async dispatch => {
-    dispatch(setSubscriptonStatus(userId))
+    dispatch(setSubscriptionStatus(userId))
     const result = await serverAPI.subscribeToUser(userId)
 
     if (result.resultCode === 0) {
         dispatch(addFriend(userId))
-        dispatch(removeSubscriptonStatus(userId))
+        dispatch(removeSubscriptionStatus(userId))
     }
 }
 
 export const unsubscribeFromUser = (userId: number): ThunkType => async dispatch => {
-    dispatch(setSubscriptonStatus(userId))
+    dispatch(setSubscriptionStatus(userId))
     const result = await serverAPI.unsubscribeFromUser(userId)
 
     if (result.resultCode === 0) {
         dispatch(removeFriend(userId))
-        dispatch(removeSubscriptonStatus(userId))
+        dispatch(removeSubscriptionStatus(userId))
     }
 }
 
@@ -110,7 +110,7 @@ export type TUsersReducerActions =
     | TRemoveSubscribtionStatus
     | TRemoveFriend
 type TSetUsers = ReturnType<typeof setUsers>
-type TSetSubscribtionStatus = ReturnType<typeof setSubscriptonStatus>
-type TRemoveSubscribtionStatus = ReturnType<typeof removeSubscriptonStatus>
+type TSetSubscribtionStatus = ReturnType<typeof setSubscriptionStatus>
+type TRemoveSubscribtionStatus = ReturnType<typeof removeSubscriptionStatus>
 export type TAddFriend = ReturnType<typeof addFriend>
-type TRemoveFriend = ReturnType<typeof removeFriend>
+export type TRemoveFriend = ReturnType<typeof removeFriend>

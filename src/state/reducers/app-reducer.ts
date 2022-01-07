@@ -59,10 +59,10 @@ export const appReducer = (state: TAppReducerState = iState, action: TAppReducer
 }
 
 //action creators
-const setUserData = (payload: IMe) => ({type: SET_USER_DATA, payload} as const)
-const removeUserData = () => ({type: REMOVE_USER_DATA} as const)
-const setAppError = (error: string) => ({type: SET_APP_ERROR, error} as const)
-const setAppStatus = (status: AppStatus) => ({type: SET_APP_STATUS, status} as const)
+export const setUserData = (payload: IMe) => ({type: SET_USER_DATA, payload} as const)
+export const removeUserData = () => ({type: REMOVE_USER_DATA} as const)
+export const setAppError = (error: string) => ({type: SET_APP_ERROR, error} as const)
+export const setAppStatus = (status: AppStatus) => ({type: SET_APP_STATUS, status} as const)
 
 //thunks
 export const appInitialization = (): ThunkType => async dispatch => {

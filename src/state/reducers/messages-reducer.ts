@@ -1,5 +1,5 @@
 import {IUser, serverAPI} from "../../api/api";
-import {ADD_TO_FRIENDS, TAddFriend} from "./users-reducer";
+import {ADD_TO_FRIENDS, REMOVE_FROM_FRIENDS, TAddFriend, TRemoveFriend} from "./users-reducer";
 import {Nullable} from "./app-reducer";
 
 //constants
@@ -38,7 +38,7 @@ export const iState = {
 }
 
 //reducer
-export const messagesReducer = (state: IMessagesState = iState, action: TMessagesReducerActions | TAddFriend) => {
+export const messagesReducer = (state: IMessagesState = iState, action: TMessagesReducerActions) => {
     switch (action.type) {
         case SET_FRIEND_LIST:
             return {
@@ -88,6 +88,9 @@ export const messagesReducer = (state: IMessagesState = iState, action: TMessage
                     [action.userId]: []
                 }
             }
+        case REMOVE_FROM_FRIENDS:
+            delete state.messages[action.userId]
+            return {...state}
         case SET_ERROR:
             return {
                 ...state,
@@ -103,7 +106,7 @@ export const sendMessage = (userId: number) => ({type: SEND_MESSAGE, userId} as 
 export const removeMessage = (userId: number, messageId: number) => ({type: REMOVE_MESSAGE, userId, messageId} as const)
 export const setFriendsList = (list: any) => ({type: SET_FRIEND_LIST, list} as const)
 export const changeNewMessageArea = (value: string) => ({type: CHANGE_NEW_MESSAGE_AREA, value} as const)
-const setMessagesError = (error: string | null) => ({type: SET_ERROR, error} as const)
+export const setMessagesError = (error: string | null) => ({type: SET_ERROR, error} as const)
 
 //thunks
 export const setFriends = () => async (dispatch: any) => {
@@ -139,6 +142,8 @@ export type TMessagesReducerActions =
     | TSetFriendsList
     | TChangeNewMessageArea
     | TSetMessagesError
+    | TAddFriend
+    | TRemoveFriend
 type TSendMessage = ReturnType<typeof sendMessage>
 type TRemoveMessage = ReturnType<typeof removeMessage>
 type TSetFriendsList = ReturnType<typeof setFriendsList>
