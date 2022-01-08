@@ -9,7 +9,7 @@ import {Preloader} from '../../components/preloader/Preloader'
 import {Paginator} from '../../components/paginator/Paginator'
 import {User} from './user/User'
 
-export const Users = React.memo(() => {
+const Users = React.memo(() => {
 
     const dispatch = useDispatch()
     const {page, count, term, friend, subscriptionProcess} = useSelector((state: TAppState) => state.users)
@@ -61,4 +61,6 @@ export const Users = React.memo(() => {
         </WithAuth>
     )
 })
+
+export default Users
 

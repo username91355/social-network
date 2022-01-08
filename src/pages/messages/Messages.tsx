@@ -16,7 +16,7 @@ import {
     setFriends
 } from '../../state/reducers/messages-reducer'
 
-export const Messages: React.FC = React.memo(() => {
+const Messages: React.FC = React.memo(() => {
 
     const
         dispatch = useDispatch(),
@@ -82,3 +82,5 @@ export const Messages: React.FC = React.memo(() => {
         </WithAuth>
     )
 })
+
+export default Messages

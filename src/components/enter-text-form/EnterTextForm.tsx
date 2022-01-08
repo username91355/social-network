@@ -22,7 +22,7 @@ export const EnterTextForm: React.FC<IProps> = React.memo(props => {
     return (
         <div className={styles.textForm__wrapper}>
             <h3 className={styles.textForm__title}>{label}</h3>
-            <Form >
+            <Form>
                 <Form.Item>
                     <TextArea className={styles.textForm__textArea} rows={4} onChange={changeTextArea} value={value}/>
                 </Form.Item>

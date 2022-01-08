@@ -23,9 +23,9 @@ const iState: IProfileReducerState = {
     status: null,
     profileStatus: ProfileStatus.IDLE,
     posts: [
-        {id: 1, text: "Hello React! It,s my first post!", likes: 20, comment: 5},
-        {id: 2, text: "Second post! I`am find.", likes: 5, comment: 2},
         {id: 3, text: "How are your friends?", likes: 15, comment: 2},
+        {id: 2, text: "Second post! I`am find.", likes: 5, comment: 2},
+        {id: 1, text: "Hello React! It,s my first post!", likes: 20, comment: 5},
     ],
     newPostText: '',
 }
