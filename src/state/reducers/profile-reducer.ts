@@ -1,4 +1,4 @@
-import {IProfile, serverAPI} from "../../api/api";
+import {IImages, IProfile, serverAPI} from "../../api/api";
 import {ThunkType} from "../store";
 import {Nullable} from "./app-reducer";
 
@@ -9,6 +9,7 @@ const SET_PROFILE_INIT_STATUS = 'socialNetwork/profileReducer/SET_PROFILE_INIT_S
 const ADD_POST = 'socialNetwork/profileReducer/ADD_POST'
 const REMOVE_POST = 'socialNetwork/profileReducer/REMOVE_POST'
 const CHANGE_POST_TEXT = 'socialNetwork/profileReducer/CHANGE_POST_TEXT'
+const CHANGE_PROFILE_AVATAR = 'socialNetwork/profileReducer/CHANGE_PROFILE_AVATAR'
 
 export enum ProfileStatus {
     IDLE,
@@ -79,6 +80,14 @@ export const profileReducer = (state: IProfileReducerState = iState, action: TPr
                 ...state,
                 posts: state.posts.filter(i => i.id !== action.id)
             }
+        case CHANGE_PROFILE_AVATAR:
+            return {
+                ...state,
+                profile: {
+                    ...state.profile,
+                    photos: action.data
+                }
+            }
         default:
             return state
     }
@@ -87,10 +96,14 @@ export const profileReducer = (state: IProfileReducerState = iState, action: TPr
 //action creators
 export const setProfile = (profile: IProfile) => ({type: SET_PROFILE, profile} as const)
 export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
-export const setProfileInitStatus = (profileStatus: ProfileStatus) => ({type: SET_PROFILE_INIT_STATUS, profileStatus} as const)
+export const setProfileInitStatus = (profileStatus: ProfileStatus) => ({
+    type: SET_PROFILE_INIT_STATUS,
+    profileStatus
+} as const)
 export const addPost = () => ({type: ADD_POST} as const)
 export const removePost = (id: number) => ({type: REMOVE_POST, id} as const)
 export const changeNewPostText = (value: string) => ({type: CHANGE_POST_TEXT, value} as const)
+export const changeUserProfileAvatar = (data: IImages) => ({type: CHANGE_PROFILE_AVATAR, data} as const)
 
 //thunks
 export const profileInitialization = (userId: number): ThunkType => async dispatch => {
@@ -120,7 +133,25 @@ export const changeStatus = (status: string): ThunkType => async dispatch => {
     } else {
         dispatch(setProfileInitStatus(ProfileStatus.FAILED))
     }
+}
+export const changeProfileInfo = (data: IProfile): ThunkType => async dispatch => {
+    const result = await serverAPI.setProfileData(data)
 
+    if (result.resultCode === 0) {
+        dispatch(setProfile(data))
+    } else {
+        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+    }
+}
+
+export const changeProfileAvatar = (file: File): ThunkType => async dispatch => {
+    const result = await serverAPI.setProfilePhoto(file)
+
+    if (result.resultCode === 0) {
+        dispatch(changeUserProfileAvatar(result.data))
+    } else {
+        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+    }
 }
 
 //types
@@ -146,9 +177,11 @@ export type TProfileReducerActions =
     | TAddPost
     | TRemovePost
     | TChangeNewPostText
+    | TChangeUserProfileAvatar
 export type TSetProfile = ReturnType<typeof setProfile>
 type TSetStatus = ReturnType<typeof setStatus>
 type TSetProfileInitStatus = ReturnType<typeof setProfileInitStatus>
 type TAddPost = ReturnType<typeof addPost>
 type TRemovePost = ReturnType<typeof removePost>
 type TChangeNewPostText = ReturnType<typeof changeNewPostText>
+type TChangeUserProfileAvatar = ReturnType<typeof changeUserProfileAvatar>

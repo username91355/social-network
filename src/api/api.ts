@@ -4,7 +4,8 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0',
     withCredentials: true,
     headers: {
-        'api-key': 'a7116e67-1807-4b05-84ac-bacabf26edbb'
+        // 'api-key': 'a7116e67-1807-4b05-84ac-bacabf26edbb'
+        'api-key': '6e713ecd-57df-4877-9a84-e619dbd38570'
     }
 })
 
@@ -82,13 +83,18 @@ export const serverAPI = {
             .then(res => res.data)
     },
 
-    setProfilePhoto(image: File): Promise<IResponse> {
+    setProfilePhoto(image: File) {
         const formData = new FormData()
         formData.append('image', image)
 
         return instance
-            .put<IResponse>('/profile/photo', image, {headers: {'ContentType': 'multipart/form-data'}})
+            .put('/profile/photo', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
             .then(res => res.data)
+            .catch(err => err)
     },
 
 }
@@ -110,6 +116,11 @@ interface IGetUser {
     items: IUser[]
     totalCount: number
     error: string | null
+}
+
+export interface IImages {
+    large: string
+    small: string
 }
 
 export interface IUser {

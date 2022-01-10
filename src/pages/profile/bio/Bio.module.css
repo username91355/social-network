@@ -1,19 +1,26 @@
 .profile__bio {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-areas: 'a i';
+    grid-template-columns: 1fr 3fr;
+    grid-gap: 5px;
 }
 
 .profile__bio h2 {
     color: #f0f2f5;
 }
+.profile__bio_avaAndSettingsSection {
+    grid-area: a;
+}
 
 .profile__bio_img {
+    margin: 10px;
     width: 150px;
     border-radius: 50%;
     background-color: #f0f2f5;
 }
 
 .profile__bio_info {
+    grid-area: i;
     padding: 10px;
     width: 100%;
 }
