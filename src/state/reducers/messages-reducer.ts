@@ -23,7 +23,11 @@ export const iState = {
             {id: 5, message: 'I am OK.', outgoing: true},
             {id: 6, message: 'OK. Maybe go to the walk?', outgoing: false},
         ],
-        19850: [
+        // 19850: [
+        //     {id: 1, message: 'Hi. How are you?', outgoing: true},
+        //     {id: 2, message: 'Good afternoon! I\'m on a business trip in Norway', outgoing: false},
+        // ],
+        21486: [
             {id: 1, message: 'Hi. How are you?', outgoing: true},
             {id: 2, message: 'Good afternoon! I\'m on a business trip in Norway', outgoing: false},
         ],

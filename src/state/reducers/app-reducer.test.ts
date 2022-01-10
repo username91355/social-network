@@ -7,6 +7,7 @@ const testStateWitoutData = {
     email: null,
     login: null,
     error: null,
+    captchaUrl: null
 }
 
 const testStateWithData = {
@@ -16,6 +17,7 @@ const testStateWithData = {
     email: null,
     login: null,
     error: null,
+    captchaUrl: null
 }
 
 describe('App-reducer tests', () => {

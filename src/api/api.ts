@@ -17,7 +17,7 @@ export const serverAPI = {
             .then(res => res.data)
     },
 
-    login(email: string, password: string, rememberMe: boolean, captcha: boolean): Promise<IResponse<{ userId: number }>> {
+    login(email: string, password: string, rememberMe: boolean, captcha: string | null): Promise<IResponse<{ userId: number }>> {
         return instance
             .post<IResponse<{ userId: number }>>('/auth/login', {email, password, rememberMe, captcha})
             .then(res => res.data)

@@ -7,6 +7,7 @@ const SET_USER_DATA = 'socialNetwork/appReducer/SET_USER_DATA'
 const REMOVE_USER_DATA = 'socialNetwork/appReducer/REMOVE_USER_DATA'
 const SET_APP_ERROR = 'socialNetwork/appReducer/SET_APP_ERROR'
 const SET_APP_STATUS = 'socialNetwork/appReducer/SET_APP_STATUS'
+const SET_CAPTCHA_URL = 'socialNetwork/appReducer/SET_CAPTCHA_URL'
 
 export enum AppStatus {
     IDLE,
@@ -23,6 +24,7 @@ const iState = {
     email: null as Nullable<string>,
     login: null as Nullable<string>,
     error: null as Nullable<string>,
+    captchaUrl: null as Nullable<string>
 }
 
 //reducer
@@ -53,6 +55,11 @@ export const appReducer = (state: TAppReducerState = iState, action: TAppReducer
                 ...state,
                 error: action.error
             }
+        case SET_CAPTCHA_URL:
+            return {
+                ...state,
+                captchaUrl: action.url
+            }
         default:
             return state
     }
@@ -61,8 +68,9 @@ export const appReducer = (state: TAppReducerState = iState, action: TAppReducer
 //action creators
 export const setUserData = (payload: IMe) => ({type: SET_USER_DATA, payload} as const)
 export const removeUserData = () => ({type: REMOVE_USER_DATA} as const)
-export const setAppError = (error: string) => ({type: SET_APP_ERROR, error} as const)
+export const setAppError = (error: string | null) => ({type: SET_APP_ERROR, error} as const)
 export const setAppStatus = (status: AppStatus) => ({type: SET_APP_STATUS, status} as const)
+export const setCaptchaUrl = (url: string | null) => ({type: SET_CAPTCHA_URL, url} as const)
 
 //thunks
 export const appInitialization = (): ThunkType => async dispatch => {
@@ -78,13 +86,16 @@ export const appInitialization = (): ThunkType => async dispatch => {
         dispatch(setAppStatus(AppStatus.FAILED))
     }
 }
-export const login = (email: string, password: string, rememberMe: boolean, captcha: boolean): ThunkType => async dispatch => {
+export const login = (email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType => async dispatch => {
     dispatch(setAppStatus(AppStatus.LOADING))
     const result = await serverAPI.login(email, password, rememberMe, captcha)
 
     if (result.resultCode === 0) {
         dispatch(appInitialization())
     } else {
+        if (result.resultCode === 10) {
+            dispatch(getCaptchaUrl())
+        }
         dispatch(setAppError(result.messages[0]))
         dispatch(setAppStatus(AppStatus.FAILED))
     }
@@ -94,9 +105,19 @@ export const logout = (): ThunkType => async dispatch => {
 
     if (result.resultCode === 0) {
         dispatch(removeUserData())
+        dispatch(setCaptchaUrl(null))
         dispatch(setAppStatus(AppStatus.SUCCESS))
     } else {
         dispatch(setAppError(result.messages[0]))
+        dispatch(setAppStatus(AppStatus.FAILED))
+    }
+}
+export const getCaptchaUrl = (): ThunkType => async dispatch => {
+    const result = await serverAPI.getCaptcha()
+
+    if (result) {
+        dispatch(setCaptchaUrl(result.url))
+    } else {
         dispatch(setAppStatus(AppStatus.FAILED))
     }
 }
@@ -105,8 +126,14 @@ export const logout = (): ThunkType => async dispatch => {
 export type Nullable<T> = T | null
 type TAppReducerState = typeof iState
 
-export type TAppReducerActions = TSetUserData | TRemoveUserData | TSetAppError | TSetAppStatus
+export type TAppReducerActions =
+    | TSetUserData
+    | TRemoveUserData
+    | TSetAppError
+    | TSetAppStatus
+    | TSetCaptchaUrl
 type TSetUserData = ReturnType<typeof setUserData>
 type TRemoveUserData = ReturnType<typeof removeUserData>
 type TSetAppError = ReturnType<typeof setAppError>
 type TSetAppStatus = ReturnType<typeof setAppStatus>
+type TSetCaptchaUrl = ReturnType<typeof setCaptchaUrl>
