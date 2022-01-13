@@ -1,6 +1,7 @@
 import {IUser, serverAPI} from "../../api/api";
 import {ThunkType} from "../store";
-import {Nullable} from "./app-reducer";
+import {Nullable, setAppError} from "./app-reducer";
+import {handlingError, throwNewError} from "../../utils/error-utils";
 
 //constants
 const SET_USERS = 'socialNetwork/usersReducer/SET_USERS'
@@ -17,8 +18,7 @@ const iState = {
     friend: null,
     totalCount: null,
     users: [],
-    subscriptionProcess: [],
-    usersError: null
+    subscriptionProcess: []
 }
 
 //reducer
@@ -64,30 +64,52 @@ export const removeFriend = (userId: number) => ({type: REMOVE_FROM_FRIENDS, use
 
 //thunks
 export const getUsers = (count: number, page: number, term: string, friend: boolean | null): ThunkType => async dispatch => {
-    const result = await serverAPI.getUsers(count, page, term, friend)
+    try {
+        dispatch(setAppError(null))
 
-    if (!result.error) {
-        dispatch(setUsers(result.items, result.totalCount))
+        const response = await serverAPI.getUsers(count, page, term, friend)
+
+        if (!response.error) {
+            dispatch(setUsers(response.items, response.totalCount))
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
 export const subscribeToUser = (userId: number): ThunkType => async dispatch => {
-    dispatch(setSubscriptionStatus(userId))
-    const result = await serverAPI.subscribeToUser(userId)
+    try {
+        dispatch(setAppError(null))
+        dispatch(setSubscriptionStatus(userId))
 
-    if (result.resultCode === 0) {
-        dispatch(addFriend(userId))
-        dispatch(removeSubscriptionStatus(userId))
+        const response = await serverAPI.subscribeToUser(userId)
+
+        if (response.resultCode === 0) {
+            dispatch(addFriend(userId))
+            dispatch(removeSubscriptionStatus(userId))
+        } else {
+            throwNewError(dispatch, response.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
 export const unsubscribeFromUser = (userId: number): ThunkType => async dispatch => {
-    dispatch(setSubscriptionStatus(userId))
-    const result = await serverAPI.unsubscribeFromUser(userId)
+    try {
+        dispatch(setAppError(null))
+        dispatch(setSubscriptionStatus(userId))
 
-    if (result.resultCode === 0) {
-        dispatch(removeFriend(userId))
-        dispatch(removeSubscriptionStatus(userId))
+        const response = await serverAPI.unsubscribeFromUser(userId)
+
+        if (response.resultCode === 0) {
+            dispatch(removeFriend(userId))
+            dispatch(removeSubscriptionStatus(userId))
+        } else {
+            throwNewError(dispatch, response.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
@@ -100,7 +122,6 @@ interface IUsersState {
     totalCount: Nullable<number>
     users: IUser[]
     subscriptionProcess: number[]
-    usersError: Nullable<string>
 }
 
 export type TUsersReducerActions =

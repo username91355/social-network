@@ -41,7 +41,12 @@ export const User: React.FC<IUserProps> = React.memo(props => {
             <Card style={{margin: '10px 0'}}
                   actions={[
                       <Link to={`/profile/${id}`}>Profile<UserOutlined/></Link>,
-                      <EditOutlined key="edit"/>,
+                      <>
+                          {followed
+                              ? <Link to={`/messages/${id}`}>Send message<EditOutlined key="edit"/></Link>
+                              : <p style={{fontSize: '10px'}}>Add the user as a friend to start chatting.</p>
+                          }
+                      </>,
                       <>
                           {
                               followed

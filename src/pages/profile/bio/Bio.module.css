@@ -8,8 +8,12 @@
 .profile__bio h2 {
     color: #f0f2f5;
 }
+
 .profile__bio_avaAndSettingsSection {
     grid-area: a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .profile__bio_img {
@@ -19,8 +23,19 @@
     background-color: #f0f2f5;
 }
 
-.profile__bio_info {
-    grid-area: i;
-    padding: 10px;
-    width: 100%;
+.profile__bio_settingsBlock {
+    background-color: #f0f2f5;
+    padding: 5px;
+    color: black;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.profile__bio_settingsBlock_img {
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.profile__bio_settingsBlock_img:hover {
+    color: #529cc9;
 }

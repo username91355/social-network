@@ -11,6 +11,8 @@ import {appInitialization, AppStatus} from '../state/reducers/app-reducer'
 import {useDispatch, useSelector} from 'react-redux'
 import {Navigate, Route, Routes} from 'react-router-dom'
 import {Preloader} from '../components/preloader/Preloader'
+import {ErrorSnackbar} from '../components/error-snackbar/ErrorSnackbar'
+
 
 const Users = React.lazy(() => import('../pages/users/Users'))
 const Messages = React.lazy(() => import('../pages/messages/Messages'))
@@ -19,7 +21,8 @@ export const App: React.FC = () => {
 
     const
         dispatch = useDispatch(),
-        appStatus = useSelector((state: TAppState) => state.app.appStatus)
+        appStatus = useSelector((state: TAppState) => state.app.appStatus),
+        appError = useSelector((state: TAppState) => state.app.error)
 
     useEffect(() => {
         dispatch(appInitialization())
@@ -27,6 +30,7 @@ export const App: React.FC = () => {
 
     return (
         <div className={styles.app__wrapper}>
+            <ErrorSnackbar error={appError}/>
             <Header/>
             <Nav/>
             <main>{(appStatus === AppStatus.IDLE || appStatus === AppStatus.LOADING)

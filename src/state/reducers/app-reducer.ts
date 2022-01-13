@@ -1,6 +1,7 @@
 import {IMe, serverAPI} from "../../api/api";
 import {ThunkType} from "../store";
 import {profileInitialization} from "./profile-reducer";
+import {handlingError, throwNewError} from "../../utils/error-utils";
 
 //constants
 const SET_USER_DATA = 'socialNetwork/appReducer/SET_USER_DATA'
@@ -74,51 +75,77 @@ export const setCaptchaUrl = (url: string | null) => ({type: SET_CAPTCHA_URL, ur
 
 //thunks
 export const appInitialization = (): ThunkType => async dispatch => {
-    dispatch(setAppStatus(AppStatus.LOADING))
-    const result = await serverAPI.me()
+    try {
+        dispatch(setAppError(null))
+        dispatch(setAppStatus(AppStatus.LOADING))
 
-    if (result.resultCode === 0) {
-        await dispatch(profileInitialization(result.data.id))
-        dispatch(setUserData(result.data))
-        dispatch(setAppStatus(AppStatus.SUCCESS))
-    } else {
-        dispatch(setAppError(result.messages[0]))
-        dispatch(setAppStatus(AppStatus.FAILED))
-    }
-}
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string | null): ThunkType => async dispatch => {
-    dispatch(setAppStatus(AppStatus.LOADING))
-    const result = await serverAPI.login(email, password, rememberMe, captcha)
+        const result = await serverAPI.me()
 
-    if (result.resultCode === 0) {
-        dispatch(appInitialization())
-    } else {
-        if (result.resultCode === 10) {
-            dispatch(getCaptchaUrl())
+        if (result.resultCode === 0) {
+            await dispatch(profileInitialization(result.data.id))
+            dispatch(setUserData(result.data))
+            dispatch(setAppStatus(AppStatus.SUCCESS))
+        } else {
+            handlingError(dispatch, result.messages[0])
         }
-        dispatch(setAppError(result.messages[0]))
-        dispatch(setAppStatus(AppStatus.FAILED))
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
+
+export const login = (email: string,
+                      password: string,
+                      rememberMe: boolean,
+                      captcha: string | null): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppError(null))
+        dispatch(setAppStatus(AppStatus.LOADING))
+
+        const result = await serverAPI.login(email, password, rememberMe, captcha)
+
+        if (result.resultCode === 0) {
+            dispatch(appInitialization())
+        } else {
+            if (result.resultCode === 10) {
+                dispatch(getCaptchaUrl())
+            }
+            throwNewError(dispatch, result.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
+    }
+}
+
 export const logout = (): ThunkType => async dispatch => {
-    const result = await serverAPI.logout()
+    try {
+        dispatch(setAppError(null))
 
-    if (result.resultCode === 0) {
-        dispatch(removeUserData())
-        dispatch(setCaptchaUrl(null))
-        dispatch(setAppStatus(AppStatus.SUCCESS))
-    } else {
-        dispatch(setAppError(result.messages[0]))
-        dispatch(setAppStatus(AppStatus.FAILED))
+        const result = await serverAPI.logout()
+
+        if (result.resultCode === 0) {
+            dispatch(removeUserData())
+            dispatch(setCaptchaUrl(null))
+            dispatch(setAppStatus(AppStatus.SUCCESS))
+        } else {
+            throwNewError(dispatch, result.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
-export const getCaptchaUrl = (): ThunkType => async dispatch => {
-    const result = await serverAPI.getCaptcha()
 
-    if (result) {
-        dispatch(setCaptchaUrl(result.url))
-    } else {
-        dispatch(setAppStatus(AppStatus.FAILED))
+export const getCaptchaUrl = (): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppError(null))
+        const result = await serverAPI.getCaptcha()
+
+        if (result) {
+            dispatch(setCaptchaUrl(result.url))
+        } else {
+            throwNewError(dispatch, 'Captcha not received')
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 

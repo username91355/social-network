@@ -1,13 +1,13 @@
 import {IUser, serverAPI} from "../../api/api";
 import {ADD_TO_FRIENDS, REMOVE_FROM_FRIENDS, TAddFriend, TRemoveFriend} from "./users-reducer";
-import {Nullable} from "./app-reducer";
+import {setAppError} from "./app-reducer";
+import {handlingError, throwNewError} from "../../utils/error-utils";
 
 //constants
 const SET_FRIEND_LIST = 'socialNetwork/messagesReducer/SET_FRIEND_LIST';
 const CHANGE_NEW_MESSAGE_AREA = 'socialNetwork/messagesReducer/CHANGE_NEW_MESSAGE_AREA';
 const SEND_MESSAGE = 'socialNetwork/messagesReducer/SEND_MESSAGE';
 const REMOVE_MESSAGE = 'socialNetwork/messagesReducer/REMOVE_MESSAGE';
-const SET_ERROR = 'socialNetwork/messagesReducer/SET_ERROR';
 
 //initialization state
 export const iState = {
@@ -45,9 +45,17 @@ export const iState = {
 export const messagesReducer = (state: IMessagesState = iState, action: TMessagesReducerActions) => {
     switch (action.type) {
         case SET_FRIEND_LIST:
+            const friendsIdList = action.list.map(i => i.id);
+            const friendsWithoutDialog = friendsIdList.filter(i => {
+                return Object.keys(state.messages).indexOf('' + i) === -1
+            })
+            const restUsers = friendsWithoutDialog.map(i => ({[i]: []}))
+            Object.assign(state.messages, ...restUsers)
+
             return {
                 ...state,
-                friends: action.list
+                friends: action.list,
+                messages: {...state.messages}
             }
         case CHANGE_NEW_MESSAGE_AREA:
             return {
@@ -95,11 +103,6 @@ export const messagesReducer = (state: IMessagesState = iState, action: TMessage
         case REMOVE_FROM_FRIENDS:
             delete state.messages[action.userId]
             return {...state}
-        case SET_ERROR:
-            return {
-                ...state,
-                messagesError: action.error
-            }
         default:
             return state
     }
@@ -108,19 +111,22 @@ export const messagesReducer = (state: IMessagesState = iState, action: TMessage
 //action creators
 export const sendMessage = (userId: number) => ({type: SEND_MESSAGE, userId} as const)
 export const removeMessage = (userId: number, messageId: number) => ({type: REMOVE_MESSAGE, userId, messageId} as const)
-export const setFriendsList = (list: any) => ({type: SET_FRIEND_LIST, list} as const)
+export const setFriendsList = (list: IUser[]) => ({type: SET_FRIEND_LIST, list} as const)
 export const changeNewMessageArea = (value: string) => ({type: CHANGE_NEW_MESSAGE_AREA, value} as const)
-export const setMessagesError = (error: string | null) => ({type: SET_ERROR, error} as const)
 
 //thunks
 export const setFriends = () => async (dispatch: any) => {
-    dispatch(setMessagesError(null))
-    const response = await serverAPI.getUsers(20, 1, '', true)
+    try {
+        dispatch(setAppError(null))
+        const response = await serverAPI.getUsers(20, 1, '', true)
 
-    if (!response.error) {
-        dispatch(setFriendsList(response.items))
-    } else {
-        dispatch(setMessagesError(response.error))
+        if (!response.error) {
+            dispatch(setFriendsList(response.items))
+        } else {
+            throwNewError(dispatch, response.error)
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
@@ -131,7 +137,6 @@ interface IMessagesState {
         [key: number]: IMessage[]
     }
     newMessageText: string
-    messagesError: Nullable<string>
 }
 
 export interface IMessage {
@@ -145,11 +150,9 @@ export type TMessagesReducerActions =
     | TRemoveMessage
     | TSetFriendsList
     | TChangeNewMessageArea
-    | TSetMessagesError
     | TAddFriend
     | TRemoveFriend
 type TSendMessage = ReturnType<typeof sendMessage>
 type TRemoveMessage = ReturnType<typeof removeMessage>
 type TSetFriendsList = ReturnType<typeof setFriendsList>
 type TChangeNewMessageArea = ReturnType<typeof changeNewMessageArea>
-type TSetMessagesError = ReturnType<typeof setMessagesError>

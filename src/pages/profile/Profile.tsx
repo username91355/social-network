@@ -24,6 +24,8 @@ export const Profile: React.FC = React.memo(() => {
         id = useSelector((state: any) => state.app.id),
         profile = useSelector((state: any) => state.profile.profile),
         profileStatus = useSelector((state: any) => state.profile.status),
+        isFriend = useSelector((state: any) => state.profile.currentProfileIsFriend),
+        subscriptionProcess = useSelector((state: any) => state.users.subscriptionProcess),
         profileInitStatus = useSelector((state: any) => state.profile.profileStatus),
         posts = useSelector((state: any) => state.profile.posts),
         newPostText = useSelector((state: any) => state.profile.newPostText)
@@ -66,6 +68,8 @@ export const Profile: React.FC = React.memo(() => {
                     <div>
                         <Bio profile={profile}
                              profileStatus={profileStatus}
+                             isFriend={isFriend}
+                             subscriptionProcess={subscriptionProcess}
                              changeUserStatus={changeUserStatus}/>
                         <hr/>
                         <EnterTextForm title={'Add post'}
@@ -74,7 +78,12 @@ export const Profile: React.FC = React.memo(() => {
                                        onChange={changeNewPostArea}
                                        send={addNewPost}/>
                         {profile.userId === id && posts.map((i: any) => {
-                            return <Post key={i.id} id={i.id} text={i.text} postLikes={i.likes}
+                            return <Post key={i.id}
+                                         id={i.id}
+                                         author={profile.fullName}
+                                         avatar={profile.photos.small}
+                                         text={i.text}
+                                         postLikes={i.likes}
                                          postComment={i.comment}/>
                         })}
                     </div>

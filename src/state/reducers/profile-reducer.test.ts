@@ -13,6 +13,7 @@ export const testState = {
     profile: null,
     status: null,
     profileStatus: ProfileStatus.IDLE,
+    currentProfileIsFriend: false,
     posts: [
         {id: 1, text: "Hello React! It,s my first post!", likes: 20, comment: 5},
         {id: 2, text: "Second post! I`am find.", likes: 5, comment: 2},

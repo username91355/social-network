@@ -4,8 +4,7 @@ import {
     messagesReducer,
     removeMessage,
     sendMessage,
-    setFriendsList,
-    setMessagesError
+    setFriendsList
 } from "./messages-reducer";
 
 const testUser = {
@@ -83,12 +82,6 @@ describe('Messages-reducer tests', () => {
         const result = messagesReducer(testState, changeNewMessageArea('new text'))
 
         expect(result.newMessageText).toBe('new text')
-        expect(result).not.toBe(testState)
-    })
-    it('Set messages error', () => {
-        const result = messagesReducer(testState, setMessagesError('test error'))
-
-        expect(result.messagesError).toBe('test error')
         expect(result).not.toBe(testState)
     })
     it('Add friend', () => {

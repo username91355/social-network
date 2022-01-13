@@ -10,12 +10,14 @@ interface IProps {
     text: string
     postLikes: number
     postComment: number
+    author: string
+    avatar: string
 }
 
 export const Post: React.FC<IProps> = React.memo(props => {
 
     const dispatch = useDispatch()
-    const {id, text, postLikes, postComment} = props
+    const {id, text, postLikes, postComment, author, avatar} = props
     const [likes, setLikes] = useState(postLikes);
     const [likeThisPost, setLikeThisPost] = useState(false)
     const [action, setAction] = useState<null | string>(null);
@@ -60,8 +62,8 @@ export const Post: React.FC<IProps> = React.memo(props => {
     return (
         <Comment style={{margin: '10px 10px', backgroundColor: 'white', color: 'black'}}
                  actions={actions}
-                 author={<a>{'BDmitriy'}</a>}
-                 avatar={<Avatar src="https://joeschmoe.io/api/v1/random" alt="avatar"/>}
+                 author={<a>{author}</a>}
+                 avatar={<Avatar src={avatar} alt="avatar"/>}
                  content={<p>{text}</p>}
         />
     )

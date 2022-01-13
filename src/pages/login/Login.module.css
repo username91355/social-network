@@ -1,0 +1,38 @@
+.login__wrapper {
+    display: flex;
+    justify-content: center;
+}
+.login__form {
+    color: white;
+}
+
+.login__form > div {
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+}
+
+input[type='password']{
+    border-radius: 5px;
+    min-width: 200px;
+    color: black;
+}
+
+input[type='email']{
+    border-radius: 5px;
+    min-width: 200px;
+    color: black;
+}
+
+.login__btn_container {
+    display: flex;
+    justify-content: center;
+}
+
+.login__btn {
+    display: flex;
+    justify-content: center;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: black;
+}

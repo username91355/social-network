@@ -1,12 +1,14 @@
 import {IImages, IProfile, serverAPI} from "../../api/api";
 import {ThunkType} from "../store";
-import {Nullable} from "./app-reducer";
+import {Nullable, setAppError} from "./app-reducer";
+import {handlingError, throwNewProfileError} from "../../utils/error-utils";
 
 //constants
 const SET_PROFILE = 'socialNetwork/profileReducer/SET_PROFILE'
 const SET_STATUS = 'socialNetwork/profileReducer/SET_STATUS'
 const SET_PROFILE_INIT_STATUS = 'socialNetwork/profileReducer/SET_PROFILE_INIT_STATUS'
 const ADD_POST = 'socialNetwork/profileReducer/ADD_POST'
+const SET_CURRENT_PROFILE_FRIEND_STATUS = 'socialNetwork/profileReducer/SET_CURRENT_PROFILE_FRIEND_STATUS'
 const REMOVE_POST = 'socialNetwork/profileReducer/REMOVE_POST'
 const CHANGE_POST_TEXT = 'socialNetwork/profileReducer/CHANGE_POST_TEXT'
 const CHANGE_PROFILE_AVATAR = 'socialNetwork/profileReducer/CHANGE_PROFILE_AVATAR'
@@ -23,6 +25,7 @@ const iState: IProfileReducerState = {
     profile: null,
     status: null,
     profileStatus: ProfileStatus.IDLE,
+    currentProfileIsFriend: false,
     posts: [
         {id: 3, text: "How are your friends?", likes: 15, comment: 2},
         {id: 2, text: "Second post! I`am find.", likes: 5, comment: 2},
@@ -48,6 +51,11 @@ export const profileReducer = (state: IProfileReducerState = iState, action: TPr
             return {
                 ...state,
                 profileStatus: action.profileStatus
+            }
+        case SET_CURRENT_PROFILE_FRIEND_STATUS:
+            return {
+                ...state,
+                currentProfileIsFriend: action.isFriend
             }
         case ADD_POST: {
 
@@ -94,63 +102,136 @@ export const profileReducer = (state: IProfileReducerState = iState, action: TPr
 }
 
 //action creators
-export const setProfile = (profile: IProfile) => ({type: SET_PROFILE, profile} as const)
-export const setStatus = (status: string) => ({type: SET_STATUS, status} as const)
+export const setProfile = (profile: IProfile) => ({
+    type: SET_PROFILE, profile
+} as const)
+
+export const setStatus = (status: string) => ({
+    type: SET_STATUS, status
+} as const)
+
 export const setProfileInitStatus = (profileStatus: ProfileStatus) => ({
     type: SET_PROFILE_INIT_STATUS,
     profileStatus
 } as const)
-export const addPost = () => ({type: ADD_POST} as const)
-export const removePost = (id: number) => ({type: REMOVE_POST, id} as const)
-export const changeNewPostText = (value: string) => ({type: CHANGE_POST_TEXT, value} as const)
-export const changeUserProfileAvatar = (data: IImages) => ({type: CHANGE_PROFILE_AVATAR, data} as const)
+
+export const setCurrentProfileFriendStatus = (isFriend: boolean) => ({
+    type: SET_CURRENT_PROFILE_FRIEND_STATUS,
+    isFriend
+} as const)
+
+export const addPost = () => ({
+    type: ADD_POST
+} as const)
+
+export const removePost = (id: number) => ({
+    type: REMOVE_POST,
+    id
+} as const)
+
+export const changeNewPostText = (value: string) => ({
+    type: CHANGE_POST_TEXT,
+    value
+} as const)
+
+export const changeUserProfileAvatar = (data: IImages) => ({
+    type: CHANGE_PROFILE_AVATAR,
+    data
+} as const)
 
 //thunks
 export const profileInitialization = (userId: number): ThunkType => async dispatch => {
-    dispatch(setProfileInitStatus(ProfileStatus.LOADING))
-    const result = await serverAPI.getProfile(userId)
+    try {
+        dispatch(setAppError(null))
+        dispatch(setProfileInitStatus(ProfileStatus.LOADING))
 
-    if (result) {
-        dispatch(setProfile(result))
-        await dispatch(getStatus(result.userId))
-        dispatch(setProfileInitStatus(ProfileStatus.SUCCESS))
-    } else {
-        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+        const response = await serverAPI.getProfile(userId)
+
+        if (response) {
+            dispatch(setProfile(response))
+            await dispatch(getStatus(response.userId))
+            await dispatch(getUserFriendStatus(response.userId))
+            dispatch(setProfileInitStatus(ProfileStatus.SUCCESS))
+        } else {
+            throwNewProfileError(dispatch, 'Error in profile initialization. Contact the administrator.')
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
 export const getStatus = (userId: number): ThunkType => async dispatch => {
-    const userStatus = await serverAPI.getProfileStatus(userId)
+    try {
+        dispatch(setAppError(null))
 
-    dispatch(setStatus(userStatus))
+        const userStatus = await serverAPI.getProfileStatus(userId)
+
+        dispatch(setStatus(userStatus))
+
+    } catch (err) {
+        handlingError(dispatch, err)
+    }
+
+}
+
+export const getUserFriendStatus = (userId: number): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppError(null))
+
+        const response = await serverAPI.userIsFollowed(userId)
+
+        dispatch(setCurrentProfileFriendStatus(response))
+
+    } catch (err) {
+        handlingError(dispatch, err)
+    }
 }
 
 export const changeStatus = (status: string): ThunkType => async dispatch => {
-    const result = await serverAPI.setProfileStatus(status)
+    try {
+        dispatch(setAppError(null))
 
-    if (result.resultCode === 0) {
-        dispatch(setStatus(status))
-    } else {
-        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+        const response = await serverAPI.setProfileStatus(status)
+
+        if (response.resultCode === 0) {
+            dispatch(setStatus(status))
+        } else {
+            throwNewProfileError(dispatch, response.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 export const changeProfileInfo = (data: IProfile): ThunkType => async dispatch => {
-    const result = await serverAPI.setProfileData(data)
+    try {
+        dispatch(setAppError(null))
 
-    if (result.resultCode === 0) {
-        dispatch(setProfile(data))
-    } else {
-        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+        const response = await serverAPI.setProfileData(data)
+
+        if (response.resultCode === 0) {
+            dispatch(setProfile(data))
+        } else {
+            throwNewProfileError(dispatch, response.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
-export const changeProfileAvatar = (file: File): ThunkType => async dispatch => {
-    const result = await serverAPI.setProfilePhoto(file)
+export const changeProfileAvatar = (file: File, id: number): ThunkType => async dispatch => {
+    try {
+        dispatch(setAppError(null))
 
-    if (result.resultCode === 0) {
-        dispatch(changeUserProfileAvatar(result.data))
-    } else {
-        dispatch(setProfileInitStatus(ProfileStatus.FAILED))
+        const response = await serverAPI.setProfilePhoto(file)
+
+        if (response.resultCode === 0) {
+            dispatch(changeUserProfileAvatar(response.data))
+            dispatch(profileInitialization(id))
+        } else {
+            throwNewProfileError(dispatch, response.messages[0])
+        }
+    } catch (err) {
+        handlingError(dispatch, err)
     }
 }
 
@@ -159,6 +240,7 @@ interface IProfileReducerState {
     profile: Nullable<IProfile>
     status: Nullable<string>
     profileStatus: ProfileStatus
+    currentProfileIsFriend: boolean
     posts: IPost[]
     newPostText: string
 }
@@ -174,6 +256,7 @@ export type TProfileReducerActions =
     TSetProfile
     | TSetStatus
     | TSetProfileInitStatus
+    | TSetCurrentProfileFriendStatus
     | TAddPost
     | TRemovePost
     | TChangeNewPostText
@@ -181,6 +264,7 @@ export type TProfileReducerActions =
 export type TSetProfile = ReturnType<typeof setProfile>
 type TSetStatus = ReturnType<typeof setStatus>
 type TSetProfileInitStatus = ReturnType<typeof setProfileInitStatus>
+type TSetCurrentProfileFriendStatus = ReturnType<typeof setCurrentProfileFriendStatus>
 type TAddPost = ReturnType<typeof addPost>
 type TRemovePost = ReturnType<typeof removePost>
 type TChangeNewPostText = ReturnType<typeof changeNewPostText>

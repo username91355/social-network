@@ -1,5 +1,5 @@
 import { EditOutlined } from '@ant-design/icons'
-import React, {ChangeEvent, useState} from 'react'
+import React, {ChangeEvent, useState, KeyboardEvent} from 'react'
 
 interface IProps {
     profileStatus: string | null
@@ -21,6 +21,12 @@ export const EditableSpan: React.FC<IProps> = React.memo(props => {
         setEditMode(false)
     }
 
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if(e.key === 'Enter') {
+            inputOnBlur()
+        }
+    }
+
     const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)
     }
@@ -35,6 +41,7 @@ export const EditableSpan: React.FC<IProps> = React.memo(props => {
                      value={inputValue}
                      onChange={inputChange}
                      onBlur={inputOnBlur}
+                     onKeyPress={onKeyPressHandler}
                      style={{color: 'black',width: '250px'}}/>
             : <span onDoubleClick={spanDBLClick}>{profileStatus || 'set status'}</span>
         }
