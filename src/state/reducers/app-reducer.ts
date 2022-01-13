@@ -86,7 +86,7 @@ export const appInitialization = (): ThunkType => async dispatch => {
             dispatch(setUserData(result.data))
             dispatch(setAppStatus(AppStatus.SUCCESS))
         } else {
-            handlingError(dispatch, result.messages[0])
+            throwNewError(dispatch, result.messages[0])
         }
     } catch (err) {
         handlingError(dispatch, err)
