@@ -9,11 +9,12 @@ interface IProps {
     label?: string
     onChange: (value: string) => void
     send: () => void
+    buttonDisabled?: boolean
 }
 
 export const EnterTextForm: React.FC<IProps> = React.memo(props => {
 
-    const {value, title, label=null,onChange, send} = props
+    const {value, title, label = null, onChange, send, buttonDisabled = false} = props
 
     const changeTextArea = (e: ChangeEvent<HTMLTextAreaElement>) => {
         onChange(e.currentTarget.value)
@@ -27,7 +28,11 @@ export const EnterTextForm: React.FC<IProps> = React.memo(props => {
                     <TextArea className={styles.textForm__textArea} rows={4} onChange={changeTextArea} value={value}/>
                 </Form.Item>
                 <Form.Item>
-                    <Button className={styles.textForm__button} htmlType='submit' onClick={send} type='primary'>
+                    <Button className={styles.textForm__button}
+                            htmlType='submit'
+                            disabled={buttonDisabled}
+                            onClick={send}
+                            type='primary'>
                         {title}
                     </Button>
                 </Form.Item>

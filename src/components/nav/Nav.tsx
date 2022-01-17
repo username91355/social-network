@@ -18,6 +18,7 @@ export const Nav = React.memo(() => {
                 <Menu.Item key='/profile'><h3><NavLink to='/profile'>Profile</NavLink></h3></Menu.Item>
                 <Menu.Item key='/users'><h3><NavLink to='/users'>Users</NavLink></h3></Menu.Item>
                 <Menu.Item key='/messages'><h3><NavLink to='/messages'>Messages</NavLink></h3></Menu.Item>
+                <Menu.Item key='/chat'><h3><NavLink to='/chat'>Chat</NavLink></h3></Menu.Item>
             </Menu>
         </nav>
     )

@@ -1,0 +1,14 @@
+.chat__wrapper {
+    height: 100%;
+    padding: 10px;
+}
+
+.chat__messages {
+    height: 520px;
+    overflow-y: auto;
+    margin-top: 10px;
+}
+
+.chat__monitor_panel {
+
+}

@@ -13,9 +13,9 @@ import {Navigate, Route, Routes} from 'react-router-dom'
 import {Preloader} from '../components/preloader/Preloader'
 import {ErrorSnackbar} from '../components/error-snackbar/ErrorSnackbar'
 
-
 const Users = React.lazy(() => import('../pages/users/Users'))
 const Messages = React.lazy(() => import('../pages/messages/Messages'))
+const Chat = React.lazy(() => import('../pages/chat/Chat'))
 
 export const App: React.FC = () => {
 
@@ -50,6 +50,10 @@ export const App: React.FC = () => {
                     <Route path='/messages/:userId' element={
                         <Suspense fallback={<Preloader/>}>
                             <Messages/>
+                        </Suspense>}/>
+                    <Route path='/Chat' element={
+                        <Suspense fallback={<Preloader/>}>
+                            <Chat/>
                         </Suspense>}/>
                     <Route path='/login' element={<Login/>}/>
                     <Route path='*' element={<PageNotFound/>}/>

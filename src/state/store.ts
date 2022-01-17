@@ -4,12 +4,14 @@ import thunk, {ThunkAction} from 'redux-thunk'
 import {profileReducer, TProfileReducerActions} from "./reducers/profile-reducer";
 import {TUsersReducerActions, usersReducer} from "./reducers/users-reducer";
 import {messagesReducer, TMessagesReducerActions} from "./reducers/messages-reducer";
+import {chatReducer, TChatActions} from "./reducers/chat-reducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
     profile: profileReducer,
     users: usersReducer,
-    messages: messagesReducer
+    messages: messagesReducer,
+    chat: chatReducer
 })
 
 export const store = createStore(rootReducer, applyMiddleware(thunk))
@@ -18,7 +20,12 @@ export const store = createStore(rootReducer, applyMiddleware(thunk))
 export type TAppState = ReturnType<typeof rootReducer>
 
 //App actions type
-export type TAppAction = TAppReducerActions | TProfileReducerActions | TUsersReducerActions | TMessagesReducerActions
+export type TAppAction =
+    | TAppReducerActions
+    | TProfileReducerActions
+    | TUsersReducerActions
+    | TMessagesReducerActions
+    | TChatActions
 
 //Thunk type
 export type ThunkType = ThunkAction<void, TAppState, unknown, TAppAction>
